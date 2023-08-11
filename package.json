@@ -9,14 +9,20 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@prisma/client": "^5.1.1",
     "@types/node": "20.4.8",
     "@types/react": "18.2.18",
     "@types/react-dom": "18.2.7",
+    "bcryptjs": "^2.4.3",
     "eslint": "8.46.0",
     "eslint-config-next": "13.4.13",
+    "jsonwebtoken": "^9.0.1",
+    "mongodb": "^5.7.0",
     "next": "13.4.13",
+    "prisma": "^5.1.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-hook-form": "^7.45.4",
     "typescript": "5.1.6"
   }
 }
