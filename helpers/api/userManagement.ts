@@ -10,14 +10,14 @@ export const userManagement = {
 
 }
 
-async function createUser({ username, password }: { username: string, password: string})  {
-    if (await prisma.user.findUnique({ where: { username } })) {
+async function createUser({ email, password }: { email: string, password: string})  {
+    if (await prisma.user.findUnique({ where: { email } })) {
         throw 'Username already claimed.';
     }
 
     const user = await prisma.user.create({
         data: {
-            username,
+            email,
             password: bcrypt.hashSync(password, 10),
         }
     });
