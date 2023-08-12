@@ -1,12 +1,11 @@
 import { userManagement } from "../../../../helpers/api";
 import { NextResponse } from "next/server";
-import { redirect } from 'next/navigation';
-import { RedirectType } from "next/dist/client/components/redirect";
+import { cookies } from "next/headers";
 
 export async function POST(req: Request) {
     const data = await req.json();
     try {
-        const res = await userManagement.createUser(data);
+        const res = await userManagement.registerUser(data);
 
         return NextResponse.json({"message": "success"});
     } catch (e) {
