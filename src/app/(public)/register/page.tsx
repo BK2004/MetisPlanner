@@ -6,8 +6,14 @@ import { useEffect, useState } from "react";
 
 export default function page() {
     const [email, setEmail] = useState("");
+    const [submitted, setSubmitted] = useState(false);
     
     const onSubmit = (data: FieldValues) => {
+        if (submitted) {
+            return;
+        }
+
+        setSubmitted(true);
         fetch('/api/register', {
             method: 'POST',
             headers: {
@@ -16,8 +22,11 @@ export default function page() {
             },
             body: JSON.stringify(data)
         }).then((res: Response) => {
+            setSubmitted(false);
+            if (res.status != 200) { return; }
             setEmail(data.email);
-        }).catch(() => {
+        }).catch((e) => {
+            
         })
     }
 

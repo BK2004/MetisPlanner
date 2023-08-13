@@ -7,11 +7,6 @@ const nextConfig = {
                 destination: "/planner/daily",
                 permanent: true,
             },
-            {
-                source: "/verify",
-                destination: "/",
-                permanent: true,
-            }
         ]
     },
     env: {
