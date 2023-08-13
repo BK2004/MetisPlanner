@@ -1,13 +1,13 @@
 import { cookies } from 'next/headers';
 import { prisma } from '..';
-
-const emailTemplates = require('../../components/emailTemplates');
+import * as jose from 'jose';
 
 const { MongoClient } = require("mongodb");
 const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
 
 const mongoClient = new MongoClient(process.env.MONGODB_URI);
+
+const jwtSecret = new TextEncoder().encode(process.env.SECRET);
 
 // Create TTL index on verifications collection
 try {
@@ -52,7 +52,7 @@ async function verifyUser({ verificationId }: { verificationId: string }) {
     
     await prisma.verifications.delete({ where: { id: verificationId }});
 
-    assignToken(user);
+    await assignToken(user);
 }
 
 async function registerUser({ email, password }: User)  {
@@ -78,26 +78,36 @@ async function registerUser({ email, password }: User)  {
     }
 }
 
-function assignToken({ email, id }: User) {
-    if (!getUser()) {
-        const token = jwt.sign({ email, id }, process.env.SECRET, { expiresIn: '7d' }); // Default token expiry to 7 days
+async function assignToken({ email, id }: User) {
+    if (!(await getUser())) {
+        const token = await new jose.SignJWT({ email, id })
+            .setProtectedHeader({ alg: 'HS256' })
+            .setIssuedAt()
+            .setExpirationTime("7d") // Default token expiry to 7 days
+            .sign(jwtSecret); 
 
-        cookies().set("auth-token", token);
+        cookies().set("auth-token", token, { httpOnly: true, expires: Date.now() + 1000 * 60 * 60 * 24 * 7 });
     } else {
         throw 'Already signed in.';
     }
 }
 
-function getUser(): User | undefined {
-    const token = cookies().get("auth-token");
-    if (!token) { return; }
+async function getUser(): Promise<jose.JWTPayload | undefined> {
+    const token = cookies().get("auth-token")?.value;
+    if (!token) {
+        return undefined;
+    }
 
-    const decoded = jwt.verify(token, process.env.SECRET);
-    return decoded;
+    try {
+        const res = (await jose.jwtVerify(token, jwtSecret)).payload;
+        return res;
+    } catch(e) {
+        return undefined;
+    }
 }
 
-function signOut() {
-    if (getUser()) {
+async function signOut() {
+    if (await getUser()) {
         cookies().delete("auth-token");
     } else {
         throw 'Not signed in.';
