@@ -1,2 +1,2 @@
-export * from './Register';
+export * from './AuthForm';
 export * from './Verify';

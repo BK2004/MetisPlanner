@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { userManagement } from "../helpers/api";
+
 import * as jose from 'jose';
 
 const jwtSecret = new TextEncoder().encode(process.env.SECRET);
@@ -10,6 +10,11 @@ const authRoutes = [
     "/api/verify"
 ]
 
+const protectedRoutes = [
+    '/planner',
+    '/planner/:path*'
+]
+
 export async function middleware(req: NextRequest) {
     let user: any = undefined;
 
@@ -18,6 +23,8 @@ export async function middleware(req: NextRequest) {
     } catch(e) {
         
     }
+
+
 
     if (!authRoutes.includes(req.nextUrl.pathname) && !user) {
         req.cookies.delete("auth-token");
@@ -33,5 +40,5 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-    matcher: ['/api/verify', '/register', '/planner', '/planner/:path*'],
+    matcher: ['/login', '/register', '/api/verify', '/planner', '/planner/:path*'],
   }

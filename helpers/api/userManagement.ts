@@ -22,6 +22,7 @@ try {
 export const userManagement = {
     verifyUser,
     registerUser,
+    logIn,
     assignToken,
     getUser,
     signOut,
@@ -31,6 +32,10 @@ type User = {
     id: string | undefined,
     email: string,
     password: string,
+}
+
+function hashPassword(text: string) {
+    return bcrypt.hashSync(text, 10);
 }
 
 async function verifyUser({ verificationId }: { verificationId: string }) {
@@ -68,7 +73,7 @@ async function registerUser({ email, password }: User)  {
         const verification = await prisma.verifications.create({
             data: {
                 email,
-                password: bcrypt.hashSync(password, 10),
+                password: hashPassword(password),
             }
         });
         
@@ -76,6 +81,34 @@ async function registerUser({ email, password }: User)  {
     } catch(e) {
         throw e
     }
+}
+
+async function logIn({ email, password }: User) {
+    if (!email || !password) {
+        throw "Invalid arguments";
+    }
+
+    if (await getUser()) {
+        throw "Already logged in";
+    }
+
+    // Attempt to retrieve user based on credentials
+    const user = await prisma.users.findUnique({ where: {
+        email,
+    }});
+
+    if (!user) {
+        // Invalid email or user not signed up
+        throw 'Invalid email';
+    }
+
+    if (!bcrypt.compareSync(password, user.password)) {
+        throw 'Invalid credentials'
+    }
+
+    await assignToken(user);
+
+    return user;
 }
 
 async function assignToken({ email, id }: User) {

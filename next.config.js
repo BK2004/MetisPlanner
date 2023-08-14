@@ -5,7 +5,7 @@ const nextConfig = {
             {
                 source: "/planner",
                 destination: "/planner/daily",
-                permanent: true,
+                permanent: false,
             },
         ]
     },

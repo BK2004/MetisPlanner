@@ -1,6 +1,5 @@
 import { userManagement } from "../../../../helpers/api";
 import { NextResponse, NextRequest } from "next/server";
-import { cookies } from "next/headers";
 import { sendEmail } from "../../../../helpers";
 import { emailTemplates } from "../../../../components";
 
@@ -21,6 +20,7 @@ export async function POST(req: NextRequest) {
 
         return NextResponse.json({"message": "success"});
     } catch (e) {
+        console.log(e);
         return NextResponse.json({"message": "Email already in use, please sign in."}, {"status": 401});
     }
 }
