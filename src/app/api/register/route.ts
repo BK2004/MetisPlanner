@@ -13,7 +13,7 @@ export async function POST(req: NextRequest) {
 
         // Send verification email
         await sendEmail({
-            recipient: res.email,
+            recipient: res.username,
             content: emailTemplates.verification({verificationUrl: decodeURIComponent(url.href)}),
             subject: "Account verification"
         })

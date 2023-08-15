@@ -1,6 +1,7 @@
 datasource db {
     provider = "mongodb"
-    url = env("MONGODB_URI")
+    url=env("PRISMA_PROXY_URI")
+    directUrl = env("MONGODB_URI")
 }
 
 generator client {
@@ -9,7 +10,7 @@ generator client {
 
 model Users {
     id String @id @default(auto()) @map("_id") @db.ObjectId
-    email String @unique
+    username String @unique
     password String
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
@@ -17,7 +18,7 @@ model Users {
 
 model Verifications {
     id String @id @default(auto()) @map("_id") @db.ObjectId
-    email String @unique
+    username String @unique
     password String
     createdAt DateTime @default(now())
 }

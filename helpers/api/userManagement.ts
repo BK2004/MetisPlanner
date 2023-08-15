@@ -1,13 +1,11 @@
-import { cookies } from 'next/headers';
+import { NextResponse } from 'next/server';
 import { prisma } from '..';
-import * as jose from 'jose';
+import { assignToken, getUser, signOut } from './';
 
 const { MongoClient } = require("mongodb");
 const bcrypt = require('bcryptjs');
 
 const mongoClient = new MongoClient(process.env.MONGODB_URI);
-
-const jwtSecret = new TextEncoder().encode(process.env.SECRET);
 
 // Create TTL index on verifications collection
 try {
@@ -23,14 +21,12 @@ export const userManagement = {
     verifyUser,
     registerUser,
     logIn,
-    assignToken,
-    getUser,
-    signOut,
+    validateUser,
 }
 
 type User = {
     id: string | undefined,
-    email: string,
+    username: string,
     password: string,
 }
 
@@ -50,7 +46,7 @@ async function verifyUser({ verificationId }: { verificationId: string }) {
     // Valid verification attempt, register user's account and remove document from verification collection
     const user = await prisma.users.create({
         data: {
-            email: verification.email,
+            username: verification.username,
             password: verification.password,
         }
     })
@@ -60,11 +56,11 @@ async function verifyUser({ verificationId }: { verificationId: string }) {
     await assignToken(user);
 }
 
-async function registerUser({ email, password }: User)  {
-    if (!email || !password) {
+async function registerUser({ username, password }: User)  {
+    if (!username || !password) {
         throw 'Invalid arguments';
     }
-    if (await prisma.verifications.findUnique({ where: { email } }) || await prisma.users.findUnique({ where: { email } })) {
+    if (await prisma.verifications.findUnique({ where: { username } }) || await prisma.users.findUnique({ where: { username } })) {
         throw 'Email already active.';
     }
 
@@ -72,7 +68,7 @@ async function registerUser({ email, password }: User)  {
         // Create verification document
         const verification = await prisma.verifications.create({
             data: {
-                email,
+                username,
                 password: hashPassword(password),
             }
         });
@@ -83,8 +79,8 @@ async function registerUser({ email, password }: User)  {
     }
 }
 
-async function logIn({ email, password }: User) {
-    if (!email || !password) {
+async function logIn({ username, password }: User) {
+    if (!username || !password) {
         throw "Invalid arguments";
     }
 
@@ -94,7 +90,7 @@ async function logIn({ email, password }: User) {
 
     // Attempt to retrieve user based on credentials
     const user = await prisma.users.findUnique({ where: {
-        email,
+        username,
     }});
 
     if (!user) {
@@ -111,38 +107,23 @@ async function logIn({ email, password }: User) {
     return user;
 }
 
-async function assignToken({ email, id }: User) {
-    if (!(await getUser())) {
-        const token = await new jose.SignJWT({ email, id })
-            .setProtectedHeader({ alg: 'HS256' })
-            .setIssuedAt()
-            .setExpirationTime("7d") // Default token expiry to 7 days
-            .sign(jwtSecret); 
+async function validateUser() {
+    const user = await getUser();
+    if (!user || !user.username) {
+        await signOut();
 
-        cookies().set("auth-token", token, { httpOnly: true, expires: Date.now() + 1000 * 60 * 60 * 24 * 7 });
-    } else {
-        throw 'Already signed in.';
-    }
-}
-
-async function getUser(): Promise<jose.JWTPayload | undefined> {
-    const token = cookies().get("auth-token")?.value;
-    if (!token) {
-        return undefined;
+        return false;
     }
 
-    try {
-        const res = (await jose.jwtVerify(token, jwtSecret)).payload;
-        return res;
-    } catch(e) {
-        return undefined;
-    }
-}
+    if (user) {
+        // Check database to see if they are a valid user
+        const userExists = await prisma.users.findUnique({ where: { username: user.username as string }});
+        if (userExists) return true;
 
-async function signOut() {
-    if (await getUser()) {
-        cookies().delete("auth-token");
-    } else {
-        throw 'Not signed in.';
+        await signOut();
+
+        return false;
     }
+
+    return false;
 }
