@@ -13,14 +13,13 @@ export async function POST(req: NextRequest) {
 
         // Send verification email
         await sendEmail({
-            recipient: res.username,
+            recipient: res.email,
             content: emailTemplates.verification({verificationUrl: decodeURIComponent(url.href)}),
             subject: "Account verification"
         })
 
         return NextResponse.json({"message": "success"});
     } catch (e) {
-        console.log(e);
-        return NextResponse.json({"message": "Email already in use, please sign in."}, {"status": 401});
+        return NextResponse.json({"message": e}, {"status": 401});
     }
 }

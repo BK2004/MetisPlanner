@@ -7,12 +7,14 @@ const bcrypt = require('bcryptjs');
 
 const mongoClient = new MongoClient(process.env.MONGODB_URI);
 
-// Create TTL index on verifications collection
+// Create TTL index on verifications & passwordChanges collections
 try {
     const db = mongoClient.db("planner");
     const verificationsCol = db.collection("Verifications");
+    const passwordChangesCol = db.collection("PasswordChanges");
 
     verificationsCol.createIndex({ createdAt: 1 }, { expireAfterSeconds: 60 * 15 }) // Create index that defaults to expire after 15 minutes
+    passwordChangesCol.createIndex({ createdAt: 1 }, { expireAfterSeconds: 60 * 10 }) // Create index that defaults to expire after 10 minutes
 } catch(e) {} finally {
     mongoClient.close();
 }
@@ -21,12 +23,11 @@ export const userManagement = {
     verifyUser,
     registerUser,
     logIn,
-    validateUser,
 }
 
 type User = {
     id: string | undefined,
-    username: string,
+    email: string,
     password: string,
 }
 
@@ -46,7 +47,7 @@ async function verifyUser({ verificationId }: { verificationId: string }) {
     // Valid verification attempt, register user's account and remove document from verification collection
     const user = await prisma.users.create({
         data: {
-            username: verification.username,
+            email: verification.email,
             password: verification.password,
         }
     })
@@ -56,31 +57,29 @@ async function verifyUser({ verificationId }: { verificationId: string }) {
     await assignToken(user);
 }
 
-async function registerUser({ username, password }: User)  {
-    if (!username || !password) {
+async function registerUser({ email, password }: User)  {
+    if (!email || !password) {
         throw 'Invalid arguments';
     }
-    if (await prisma.verifications.findUnique({ where: { username } }) || await prisma.users.findUnique({ where: { username } })) {
+    if (await prisma.verifications.findUnique({ where: { email } }) || await prisma.users.findUnique({ where: { email } })) {
         throw 'Email already active.';
     }
 
-    try {
-        // Create verification document
-        const verification = await prisma.verifications.create({
-            data: {
-                username,
-                password: hashPassword(password),
-            }
-        });
-        
-        return verification;
-    } catch(e) {
-        throw e
-    }
+    // Create verification document
+    const verification = await prisma.verifications.create({
+        data: {
+            email,
+            password: hashPassword(password),
+        }
+    });
+
+    if (!verification) throw 'Internal server error';
+    
+    return verification;
 }
 
-async function logIn({ username, password }: User) {
-    if (!username || !password) {
+async function logIn({ email, password }: User) {
+    if (!email || !password) {
         throw "Invalid arguments";
     }
 
@@ -90,7 +89,7 @@ async function logIn({ username, password }: User) {
 
     // Attempt to retrieve user based on credentials
     const user = await prisma.users.findUnique({ where: {
-        username,
+        email,
     }});
 
     if (!user) {
@@ -107,23 +106,6 @@ async function logIn({ username, password }: User) {
     return user;
 }
 
-async function validateUser() {
-    const user = await getUser();
-    if (!user || !user.username) {
-        await signOut();
+async function requestPasswordChange(email: string) {
 
-        return false;
-    }
-
-    if (user) {
-        // Check database to see if they are a valid user
-        const userExists = await prisma.users.findUnique({ where: { username: user.username as string }});
-        if (userExists) return true;
-
-        await signOut();
-
-        return false;
-    }
-
-    return false;
 }

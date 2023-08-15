@@ -3,9 +3,9 @@ import { cookies } from 'next/headers';
 
 const jwtSecret = new TextEncoder().encode(process.env.SECRET);
 
-export async function assignToken({ username, id }: { username: string, id: string}) {
+export async function assignToken({ email, id }: { email: string, id: string}) {
     if (!(await getUser())) {
-        const token = await new jose.SignJWT({ username, id })
+        const token = await new jose.SignJWT({ email, id })
             .setProtectedHeader({ alg: 'HS256' })
             .setIssuedAt()
             .setExpirationTime("7d") // Default token expiry to 7 days
