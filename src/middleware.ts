@@ -25,7 +25,7 @@ export async function middleware(req: NextRequest) {
         
     }
 
-    if ((user && !user.username) || (user && !(await prisma.users.findUnique({ where: { username: user.username }})))) {
+    if ((user && !user.email) || (user && !(await prisma.users.findUnique({ where: { email: user.email }})))) {
         // Invalidate user (cookies will be deleted in later conditionals)
         user = undefined;
     }
