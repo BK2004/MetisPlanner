@@ -5,7 +5,7 @@ import { AuthForm, EmailNotification } from "../../../../components/users/";
 import { useState } from "react";
 import { AbsoluteLogo, Loading } from "../../../../components";
 
-export default function page() {
+export default function Page() {
     const [email, setEmail] = useState("");
     const [submitted, setSubmitted] = useState(false);
     

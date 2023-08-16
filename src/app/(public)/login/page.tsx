@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 import { AbsoluteLogo, Loading } from "../../../../components";
 import { redirect } from "next/navigation";
 
-export default function page() {
+export default function Page() {
     const [submitted, setSubmitted] = useState(false);
     const [success, setSuccess] = useState(false);
 
