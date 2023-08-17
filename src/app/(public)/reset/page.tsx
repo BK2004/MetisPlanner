@@ -1,29 +1,22 @@
 'use client'
 
-import { FieldValues } from "react-hook-form";
-import { AuthForm } from "../../../../components/users";
-import { useState, useEffect } from "react";
-import { AbsoluteLogo, Loading } from "../../../../components";
-import { redirect } from "next/navigation";
+import { useState, useEffect } from 'react';
+import { FieldValues } from 'react-hook-form';
+import { Loading, AbsoluteLogo } from '../../../../components';
+import { EmailNotification } from '../../../../components/users';
+import { ResetForm } from '../../../../components/users';
 
 export default function Page() {
     const [submitted, setSubmitted] = useState(false);
     const [success, setSuccess] = useState(false);
-
-    useEffect(() => {
-        if (success) {
-            redirect("planner/daily");
-        }
-    })
+    const [email, setEmail] = useState("");
 
     const onSubmit = (data: FieldValues) => {
-        if (submitted) {
-            return;
-        }
+        if (submitted) return;
 
         setSubmitted(true);
-        fetch('/api/login', {
-            method: 'POST',
+        fetch('api/reset', {
+            method: "POST",
             headers: {
                 Accept: 'application/form-data',
                 'Content-Type': 'application/json'
@@ -33,14 +26,15 @@ export default function Page() {
             setSubmitted(false);
             if (res.status === 200) {
                 setSuccess(true);
+                setEmail(data.email);
             }
-        }).catch((e) => {})
+        }).catch(() => {});
     }
+
     return (<>
-        <AbsoluteLogo />
         <div hidden={submitted} className="text-slate-700 dark:text-gray-400 wrapper rounded-lg col-start-2 col-span-3 md:col-start-3 xl:col-start-4 xl:col-span-2 row-start-2 row-span-2 bg-white shadow-md shadow-gray-400 dark:shadow-neutral-900 dark:bg-neutral-800">
-            <AuthForm onSubmit={onSubmit} authType="login" />
+            {success ? <EmailNotification message="You will be able to finish resetting your password from there." title="Reset password" email={email} /> : <ResetForm onSubmit={onSubmit} />}
         </div>
         {submitted ? <div className="col-start-3 row-start-2 row-span-2 md:col-start-4 xl:col-start-4 xl:col-span-2"><Loading /></div> : ""}
-    </>)
+    </>);
 }
