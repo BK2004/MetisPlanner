@@ -12,7 +12,7 @@ export async function POST(req: NextRequest) {
         url.pathname = `/api/verify?id=${res.id}`;
 
         // Send verification email
-        sendEmail({
+        await sendEmail({
             recipient: res.email,
             content: emailTemplates.verification({verificationUrl: decodeURIComponent(url.href)}),
             subject: "Account verification"

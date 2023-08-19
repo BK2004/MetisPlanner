@@ -15,7 +15,7 @@ export async function POST(req: NextRequest) {
         url.pathname = `/reset/${res.id}`;
 
         // Send verification email
-        sendEmail({
+        await sendEmail({
             recipient: res.email,
             content: emailTemplates.reset({resetUrl: decodeURIComponent(url.href)}),
             subject: "Reset password"
