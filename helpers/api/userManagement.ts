@@ -23,6 +23,8 @@ export const userManagement = {
     verifyUser,
     registerUser,
     logIn,
+    requestPasswordChange,
+    finalizePasswordChange
 }
 
 type User = {
@@ -107,5 +109,40 @@ async function logIn({ email, password }: User) {
 }
 
 async function requestPasswordChange(email: string) {
+    if (!(await prisma.users.findUnique({ where: { email: email }}))) throw 'Invalid email';
 
+    if ((await prisma.passwordChanges.findUnique({ where: {
+        email: email
+    }}))) {
+        // Overwrite existing entry
+        await prisma.passwordChanges.delete({ where: { email: email }});
+    }
+    const res = await prisma.passwordChanges.create({data: {
+        email: email
+    }});
+
+    return res;
+}
+
+async function finalizePasswordChange({ email, resetId, newPassword }: { email: string, resetId: string, newPassword: string }) {
+    if (!(await prisma.users.findUnique({ where: { email }})) || !(await prisma.passwordChanges.findUnique({ where: { id: resetId, email }}))) {
+        throw 'Invalid credentials';
+    }
+
+    const res = await prisma.users.update({ where: {
+        email
+    }, data: {
+        password: hashPassword(newPassword)
+    }})
+
+    if (!res) throw 'Internal server error';
+
+    await prisma.passwordChanges.delete({ where: {
+        id: resetId,
+        email
+    }});
+
+    await assignToken(res);
+
+    return res;
 }

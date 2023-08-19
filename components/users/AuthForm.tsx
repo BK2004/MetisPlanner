@@ -1,6 +1,5 @@
 'use client'
 
-import { useEffect, useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
 
 export const AuthForm = ({ onSubmit, authType }: { onSubmit: (data: FieldValues) => any, authType: "register" | "login" }) => {

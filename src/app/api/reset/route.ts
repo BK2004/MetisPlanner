@@ -1,30 +1,21 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma, sendEmail } from '../../../../helpers';
 import { emailTemplates } from '../../../../components';
+import { userManagement } from '../../../../helpers/api';
 
 export async function POST(req: NextRequest) {
     const data = await req.json();
     try {
         if (!data.email) throw 'Invalid arguments.';
 
-        if (!(await prisma.users.findUnique({ where: { email: data.email }}))) throw 'Invalid email';
-
-        if ((await prisma.passwordChanges.findUnique({ where: {
-            email: data.email
-        }}))) {
-            // Overwrite existing entry
-            await prisma.passwordChanges.delete({ where: { email: data.email }});
-        }
-        const res = await prisma.passwordChanges.create({data: {
-            email: data.email
-        }});
+        const res = await userManagement.requestPasswordChange(data.email);
 
         if (!res) throw 'Failed to create reset link (Internal server error)';
         const url = req.nextUrl.clone();
-        url.pathname = `/api/reset?id=${res.id}`;
+        url.pathname = `/reset/${res.id}`;
 
         // Send verification email
-        await sendEmail({
+        sendEmail({
             recipient: res.email,
             content: emailTemplates.reset({resetUrl: decodeURIComponent(url.href)}),
             subject: "Reset password"
