@@ -11,8 +11,8 @@ export async function POST(req: NextRequest) {
         const res = await userManagement.finalizePasswordChange({ email: data.email, resetId: data.resetId, newPassword: data.password });
 
         return NextResponse.json({ status: 200 });
-    } catch(e) {
-        return NextResponse.json({ message: e }, { status: 401 });
+    } catch(e: any) {
+        return NextResponse.json({ message: e }, { status: 401, statusText: e });
     }
 
 }
