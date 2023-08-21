@@ -1,8 +1,9 @@
 'use client'
 
 import { FieldValues, useForm } from "react-hook-form";
+import { AuthError } from ".";
 
-export const AuthForm = ({ onSubmit, authType }: { onSubmit: (data: FieldValues) => any, authType: "register" | "login" }) => {
+export const AuthForm = ({ onSubmit, authType, errorMessage="" }: { onSubmit: (data: FieldValues) => any, authType: "register" | "login", errorMessage: string }) => {
     const { register, handleSubmit } = useForm();
 
     return (
@@ -22,6 +23,7 @@ export const AuthForm = ({ onSubmit, authType }: { onSubmit: (data: FieldValues)
                 </div>
             </div>
             <div>
+                { errorMessage !== "" ? <AuthError errorMessage={errorMessage} /> : ""}
                 <input className="bot-wrap w-full text-2xl rounded-xl p-3 px-5 text-white bg-blue-600 hover:cursor-pointer" type="submit" value={authType === "register" ? "SIGN UP" : "SIGN IN"}/>
                 <a href={`/${authType === "register" ? "login" : "register"}`} className="block mt-3 text-blue-600 dark:text-blue-500 text-sm">
                     {authType === "register" ? "Already have an account?" : "Don't have an account?"}

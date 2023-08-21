@@ -4,11 +4,13 @@ import { FieldValues, useForm } from "react-hook-form";
 import { useState, useEffect } from "react";
 import { redirect } from "next/navigation";
 import { Loading } from "..";
+import { AuthError } from ".";
 
 export function FinalizeResetForm({ email, resetId }: { email: string, resetId: string }) {
     const { register, handleSubmit } = useForm();
     const [submitted, setSubmitted] = useState(false);
     const [success, setSuccess] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("");
 
     useEffect(() => {
         if (success) {
@@ -32,12 +34,13 @@ export function FinalizeResetForm({ email, resetId }: { email: string, resetId: 
                 setSuccess(true);
             } else {
                 setSubmitted(false);
+                setErrorMessage(res.statusText);
             }
         }).catch(() => {});
     }
 
     if (!submitted)
-        return (<form className="flex flex-col justify-between h-full px-6 py-6 dark:text-neutral-400 text-neutral-600" onSubmit={handleSubmit(onSubmit)}>
+        return (<form className="bg-white shadow-md shadow-gray-400 dark:shadow-neutral-900 dark:bg-neutral-800 flex flex-col justify-between h-full px-6 py-6 dark:text-neutral-400 text-neutral-600" onSubmit={handleSubmit(onSubmit)}>
                     <div className="top-wrap w-full">
                         <h1 className="logo text-2xl mb-3 text-blue-600 font-extrabold text-center">
                             Reset your password.
@@ -52,10 +55,11 @@ export function FinalizeResetForm({ email, resetId }: { email: string, resetId: 
                         </div>
                     </div>
                     <div>
+                        {errorMessage !== "" ? <AuthError errorMessage={errorMessage}/> : ""}
                         <input className="bot-wrap w-full text-2xl rounded-xl p-3 px-5 text-white bg-blue-600 hover:cursor-pointer" type="submit" value="RESET PASSWORD"/>
                     </div>
                 </form>);
-    else if (success) {
+    else {
         return <Loading />;
     }
 }

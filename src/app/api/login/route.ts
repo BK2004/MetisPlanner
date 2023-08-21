@@ -7,7 +7,7 @@ export async function POST(req: NextRequest) {
         await userManagement.logIn(data);
 
         return NextResponse.json({status: 200});
-    } catch(e) {
-        return NextResponse.json({message: "Unauthorized"}, {status: 401});
+    } catch(e: any) {
+        return NextResponse.json({message: e}, {status: 401, statusText: e});
     }
 }

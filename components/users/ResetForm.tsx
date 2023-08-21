@@ -1,8 +1,9 @@
 'use client'
 
 import { FieldValues, useForm } from "react-hook-form";
+import { AuthError } from ".";
 
-export function ResetForm({ onSubmit }: { onSubmit: (data: FieldValues) => any}) {
+export function ResetForm({ onSubmit, errorMessage }: { onSubmit: (data: FieldValues) => any, errorMessage: string}) {
     const { register, handleSubmit } = useForm();
 
     return (
@@ -17,6 +18,7 @@ export function ResetForm({ onSubmit }: { onSubmit: (data: FieldValues) => any})
                 </div>
             </div>
             <div>
+                {errorMessage !== "" ? <AuthError errorMessage={errorMessage} /> : ""}
                 <input className="bot-wrap w-full text-2xl rounded-xl p-3 px-5 text-white bg-blue-600 hover:cursor-pointer" type="submit" value="RESET PASSWORD"/>
             </div>
         </form>

@@ -82,7 +82,7 @@ async function registerUser({ email, password }: User)  {
 
 async function logIn({ email, password }: User) {
     if (!email || !password) {
-        throw "Invalid arguments";
+        throw "Invalid email and/or password";
     }
 
     if (await getUser()) {
@@ -100,7 +100,7 @@ async function logIn({ email, password }: User) {
     }
 
     if (!bcrypt.compareSync(password, user.password)) {
-        throw 'Invalid credentials'
+        throw 'Invalid email and/or password'
     }
 
     await assignToken(user);
