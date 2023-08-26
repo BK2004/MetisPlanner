@@ -39,6 +39,11 @@ export async function middleware(req: NextRequest) {
     
     if (authRoutes.includes(req.nextUrl.pathname) && user) {
         return NextResponse.redirect(new URL("/planner/daily", req.url));
+    } else if (authRoutes.includes(req.nextUrl.pathname)) {
+        const res = NextResponse.next();
+        res.cookies.delete("auth-token");
+
+        return res;
     }
 
     return;

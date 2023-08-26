@@ -26,7 +26,9 @@ export default function Page() {
         }).then((res: Response) => {
             setSubmitted(false);
             if (res.status != 200) {
-                setErrorMessage(res.statusText);
+                res.json().then(data => {
+                    setErrorMessage(data.message !== undefined ? data.message : "Unauthorized");
+                });
 
                 return; 
             }

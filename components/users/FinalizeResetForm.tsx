@@ -34,7 +34,9 @@ export function FinalizeResetForm({ email, resetId }: { email: string, resetId: 
                 setSuccess(true);
             } else {
                 setSubmitted(false);
-                setErrorMessage(res.statusText);
+                res.json().then(data => {
+                    setErrorMessage(data.message !== undefined ? data.message : "Unauthorized");
+                });
             }
         }).catch(() => {});
     }

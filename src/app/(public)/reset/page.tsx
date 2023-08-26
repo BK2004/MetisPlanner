@@ -29,7 +29,9 @@ export default function Page() {
                 setSuccess(true);
                 setEmail(data.email);
             } else {
-                setErrorMessage(res.statusText);
+                res.json().then(data => {
+                    setErrorMessage(data.message !== undefined ? data.message : "Unauthorized");
+                })
             }
         }).catch(() => {});
     }
