@@ -19,13 +19,13 @@ export const AuthForm = ({ onSubmit, authType, errorMessage="" }: { onSubmit: (d
                 <div className="input-col my-4">
                     <label htmlFor="password" className="">Password</label>
                     <input id="password" className="outline-0 ring-gray-400 dark:ring-neutral-900 ring-1 focus:ring-2 focus:ring-blue-600 dark:focus:ring-blue-500 ring-inset border-0 rounded-md px-3 py-2 w-full transition-all duration-100 ease-linear" type="password" {...register("password", { required: true })}></input>
-                    {authType === "login" ? <a href="/reset" className="text-blue-600 dark:text-blue-500 text-sm">Forgot your password?</a> : ""}
+                    {authType === "login" ? <a href="/reset" className="text-blue-600 dark:text-blue-500 text-sm hover:underline">Forgot your password?</a> : ""}
                 </div>
             </div>
             <div>
                 { errorMessage !== "" ? <AuthError errorMessage={errorMessage} /> : ""}
-                <input className="bot-wrap w-full text-2xl rounded-xl p-3 px-5 text-white bg-blue-600 hover:cursor-pointer" type="submit" value={authType === "register" ? "SIGN UP" : "SIGN IN"}/>
-                <a href={`/${authType === "register" ? "login" : "register"}`} className="block mt-3 text-blue-600 dark:text-blue-500 text-sm">
+                <input className="bot-wrap w-full text-2xl rounded-xl p-3 px-5 text-white bg-blue-600 hover:cursor-pointer hover:opacity-90 transition-all duration-150" type="submit" value={authType === "register" ? "SIGN UP" : "SIGN IN"}/>
+                <a href={`/${authType === "register" ? "login" : "register"}`} className="block mt-3 text-blue-600 dark:text-blue-500 text-sm hover:underline">
                     {authType === "register" ? "Already have an account?" : "Don't have an account?"}
                 </a>
             </div>

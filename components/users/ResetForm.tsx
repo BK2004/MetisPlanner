@@ -19,7 +19,7 @@ export function ResetForm({ onSubmit, errorMessage }: { onSubmit: (data: FieldVa
             </div>
             <div>
                 {errorMessage !== "" ? <AuthError errorMessage={errorMessage} /> : ""}
-                <input className="bot-wrap w-full text-2xl rounded-xl p-3 px-5 text-white bg-blue-600 hover:cursor-pointer" type="submit" value="RESET PASSWORD"/>
+                <input className="bot-wrap w-full text-2xl rounded-xl p-3 px-5 text-white bg-blue-600 hover:cursor-pointer hover:opacity-90 transition-all duration-150" type="submit" value="RESET PASSWORD"/>
             </div>
         </form>
     );
