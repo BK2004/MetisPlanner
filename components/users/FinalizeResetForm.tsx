@@ -42,18 +42,18 @@ export function FinalizeResetForm({ email, resetId }: { email: string, resetId: 
     }
 
     if (!submitted)
-        return (<form className="bg-white shadow-md shadow-gray-400 dark:shadow-neutral-900 dark:bg-neutral-800 flex flex-col justify-between h-full px-6 py-6 dark:text-neutral-400 text-neutral-600" onSubmit={handleSubmit(onSubmit)}>
+        return (<form className="bg-white shadow-md shadow-gray-400 dark:shadow-neutral-900 dark:bg-neutral-850 flex flex-col justify-between h-full px-6 py-6 dark:text-neutral-400 text-neutral-600" onSubmit={handleSubmit(onSubmit)}>
                     <div className="top-wrap w-full">
                         <h1 className="logo text-2xl mb-3 text-blue-600 font-extrabold text-center">
                             Reset your password.
                         </h1>
                         <div className="input-col mb-4">
                             <label htmlFor="email" className="">Email</label>
-                            <input value={email} id="email" className="disabled outline-0 ring-gray-400 dark:ring-neutral-900 ring-1 ring-inset border-0 rounded-md px-3 py-2 w-full transition-all duration-100 ease-linear" type="text" {...register("email", { required: true, pattern: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/ })}></input>
+                            <input value={email} id="email" className="disabled outline-0 ring-gray-400 dark:bg-neutral-750 dark:ring-neutral-900 ring-1 ring-inset border-0 rounded-md px-3 py-2 w-full transition-all duration-100 ease-linear" type="text" {...register("email", { required: true, pattern: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/ })}></input>
                         </div>
                         <div className="input-col">
                             <label htmlFor="password" className="">Password</label>
-                            <input id="password" type="password" className="outline-0 ring-gray-400 dark:ring-neutral-900 ring-1 focus:ring-2 focus:ring-blue-600 dark:focus:ring-blue-500 ring-inset border-0 rounded-md px-3 py-2 w-full transition-all duration-100 ease-linear" {...register("password", { required: true })}></input>
+                            <input id="password" type="password" className="outline-0 ring-gray-400 dark:bg-neutral-750 dark:ring-neutral-900 ring-1 focus:ring-2 focus:ring-blue-600 dark:focus:ring-blue-500 ring-inset border-0 rounded-md px-3 py-2 w-full transition-all duration-100 ease-linear" {...register("password", { required: true })}></input>
                         </div>
                     </div>
                     <div>

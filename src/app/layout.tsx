@@ -17,7 +17,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`bg-gray-200 dark:bg-neutral-900 max-w-full w-screen min-h-screen ${inter.className}`}>
+      <body className={`bg-gray-200 dark:bg-neutral-800 max-w-full w-screen min-h-screen ${inter.className}`}>
         {children}
         <Analytics />
       </body>
