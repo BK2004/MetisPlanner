@@ -20,6 +20,7 @@ export default function Navbar() {
 
         setCookie("theme", html.classList.contains("dark") ? "Dark" : "Light", {
             path: "/",
+            maxAge: 365 * 24 * 60 * 60, // 1 year
         });
     }
 
