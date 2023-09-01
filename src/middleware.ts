@@ -8,12 +8,15 @@ const jwtSecret = new TextEncoder().encode(process.env.SECRET);
 const authRoutes = [
     "/login",
     "/register",
-    "/api/verify"
+    "/api/verify",
+    "/reset",
 ]
 
 const protectedRoutes = [
     '/planner',
-    '/planner/:path*'
+    '/planner/:path*',
+    '/api/logout',
+    '/settings'
 ]
 
 export async function middleware(req: NextRequest) {
@@ -50,5 +53,5 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-    matcher: ['/login', '/register', '/api/verify', '/planner', '/planner/:path*'],
+    matcher: ['/login', '/register', '/api/verify', '/api/logout', '/planner', '/planner/:path*', '/reset', '/settings'],
   }

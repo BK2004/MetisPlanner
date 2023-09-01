@@ -1,9 +1,10 @@
 import './globals.css'
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
+import { Varela_Round as Font } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/react'
+import { cookies } from 'next/headers'
 
-const inter = Inter({ subsets: ['latin'] })
+const font = Font({ weight: "400", subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: 'Metis - Daily Planner',
@@ -16,8 +17,8 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
-      <body className={`bg-gray-200 dark:bg-neutral-800 max-w-full w-screen min-h-screen ${inter.className}`}>
+    <html lang="en" className={cookies().get("theme")?.value === "Dark" ? "dark" : ""}>
+      <body className={`bg-gray-200 dark:bg-neutral-800 max-w-full w-screen min-h-screen ${font.className}`}>
         {children}
         <Analytics />
       </body>
