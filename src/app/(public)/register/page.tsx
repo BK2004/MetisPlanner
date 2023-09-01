@@ -39,7 +39,7 @@ export default function Page() {
     }
 
     return (<>
-        <div hidden={submitted} className="text-slate-700 dark:text-gray-400 wrapper rounded-lg col-start-2 col-span-3 md:col-start-3 xl:col-start-4 xl:col-span-2 row-start-2 row-span-2 bg-white shadow-md shadow-gray-400 dark:shadow-neutral-900 dark:bg-neutral-850">
+        <div hidden={submitted} className="wrapper rounded-lg col-start-2 col-span-3 md:col-start-3 xl:col-start-4 xl:col-span-2 row-start-2 row-span-2 bg-white shadow-md shadow-gray-400 dark:shadow-neutral-900 dark:bg-neutral-850">
             {email === "" ? <AuthForm onSubmit={onSubmit} authType="register" errorMessage={errorMessage} /> : <EmailNotification message="Click the link in the next 15 minutes to complete your registration!" title="Please verify your email." email={email} />}
         </div>
         {submitted ? <div className="col-start-3 row-start-2 row-span-2 md:col-start-4 xl:col-start-4 xl:col-span-2"><Loading /></div> : ""}

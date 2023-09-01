@@ -9,7 +9,6 @@ const authRoutes = [
     "/login",
     "/register",
     "/api/verify",
-    "/reset",
 ]
 
 const protectedRoutes = [
@@ -53,5 +52,5 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-    matcher: ['/login', '/register', '/api/verify', '/api/logout', '/planner', '/planner/:path*', '/reset', '/settings'],
+    matcher: ['/login', '/register', '/api/verify', '/api/logout', '/planner', '/planner/:path*', '/settings'],
   }

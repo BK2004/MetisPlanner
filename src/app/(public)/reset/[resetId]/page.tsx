@@ -13,12 +13,12 @@ export default async function Page({ params }: { params: { resetId: string } }) 
     } catch(e) {}
 
     if (!res) {
-        return <div className="text-slate-700 dark:text-gray-400 wrapper rounded-lg col-start-2 col-span-3 md:col-start-3 xl:col-start-4 xl:col-span-2 row-start-2 row-span-2 flex flex-col justify-center text-3xl">
+        return <div className="wrapper rounded-lg col-start-2 col-span-3 md:col-start-3 xl:col-start-4 xl:col-span-2 row-start-2 row-span-2 flex flex-col justify-center text-3xl">
                     <PathFailure/>
                 </div>;
     }
 
-    return (<div className="text-slate-700 dark:text-gray-400 wrapper rounded-lg col-start-2 col-span-3 md:col-start-3 xl:col-start-4 xl:col-span-2 row-start-2 row-span-2">
+    return (<div className="wrapper rounded-lg col-start-2 col-span-3 md:col-start-3 xl:col-start-4 xl:col-span-2 row-start-2 row-span-2">
                 <FinalizeResetForm email={res.email} resetId={resetId} />
             </div>)
 }

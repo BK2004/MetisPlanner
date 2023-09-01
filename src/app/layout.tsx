@@ -18,7 +18,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={cookies().get("theme")?.value === "Dark" ? "dark" : ""}>
-      <body className={`bg-gray-200 dark:bg-neutral-800 max-w-full w-screen min-h-screen ${font.className}`}>
+      <body className={`bg-gray-200 dark:bg-neutral-800 text-slate-700 dark:text-neutral-300 max-w-full w-screen min-h-screen ${font.className}`}>
         {children}
         <Analytics />
       </body>
