@@ -1,6 +1,6 @@
-import { userManagement } from "../../../../helpers/api";
+import { userManagement } from "../../../../lib/api";
 import { NextResponse, NextRequest } from "next/server";
-import { sendEmail } from "../../../../helpers";
+import { sendEmail } from "../../../../lib";
 import { emailTemplates } from "../../../../components";
 
 export async function POST(req: NextRequest) {

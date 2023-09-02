@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { userManagement } from '../../../../helpers/api';
+import { userManagement } from '../../../../lib/api';
 import { cookies } from 'next/headers';
 
 export async function GET(req: NextRequest) {

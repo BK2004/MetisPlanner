@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "../helpers/db";
+import { prisma } from "../lib/db";
 
 import * as jose from 'jose';
 

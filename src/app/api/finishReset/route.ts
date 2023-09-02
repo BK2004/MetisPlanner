@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "../../../../helpers";
-import { userManagement } from "../../../../helpers/api";
+import { prisma } from "../../../../lib";
+import { userManagement } from "../../../../lib/api";
 
 export async function POST(req: NextRequest) {
     const data = await req.json();

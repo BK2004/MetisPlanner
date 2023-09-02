@@ -1,6 +1,6 @@
-import { PathFailure } from "../../../../../components";
+import { AbsoluteLogo, PathFailure } from "../../../../../components";
 import { FinalizeResetForm } from "../../../../../components/users";
-import { prisma } from "../../../../../helpers";
+import { prisma } from "../../../../../lib";
 
 export default async function Page({ params }: { params: { resetId: string } }) {
     const resetId = params.resetId;
@@ -13,12 +13,17 @@ export default async function Page({ params }: { params: { resetId: string } }) 
     } catch(e) {}
 
     if (!res) {
-        return <div className="wrapper rounded-lg col-start-2 col-span-3 md:col-start-3 xl:col-start-4 xl:col-span-2 row-start-2 row-span-2 flex flex-col justify-center text-3xl">
-                    <PathFailure/>
-                </div>;
+        return (<>
+            <div className="wrapper rounded-lg col-start-2 col-span-3 md:col-start-3 xl:col-start-4 xl:col-span-2 row-start-2 row-span-2 flex flex-col justify-center text-3xl">
+                <PathFailure/>
+            </div>
+                </>);
     }
 
-    return (<div className="wrapper rounded-lg col-start-2 col-span-3 md:col-start-3 xl:col-start-4 xl:col-span-2 row-start-2 row-span-2">
-                <FinalizeResetForm email={res.email} resetId={resetId} />
-            </div>)
+    return (<>
+        <AbsoluteLogo />
+        <div className="wrapper rounded-lg col-start-2 col-span-3 md:col-start-3 xl:col-start-4 xl:col-span-2 row-start-2 row-span-2">
+            <FinalizeResetForm email={res.email} resetId={resetId} />
+        </div>
+    </>)
 }

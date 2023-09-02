@@ -2,22 +2,7 @@ import { NextResponse } from 'next/server';
 import { prisma } from '..';
 import { assignToken, getUser, signOut } from './';
 
-const { MongoClient } = require("mongodb");
 const bcrypt = require('bcryptjs');
-
-const mongoClient = new MongoClient(process.env.MONGODB_URI);
-
-// Create TTL index on verifications & passwordChanges collections
-try {
-    const db = mongoClient.db("planner");
-    const verificationsCol = db.collection("Verifications");
-    const passwordChangesCol = db.collection("PasswordChanges");
-
-    verificationsCol.createIndex({ createdAt: 1 }, { expireAfterSeconds: 60 * 15 }) // Create index that defaults to expire after 15 minutes
-    passwordChangesCol.createIndex({ createdAt: 1 }, { expireAfterSeconds: 60 * 10 }) // Create index that defaults to expire after 10 minutes
-} catch(e) {} finally {
-    mongoClient.close();
-}
 
 export const userManagement = {
     verifyUser,

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { userManagement } from "../../../../helpers/api";
+import { userManagement } from "../../../../lib/api";
 
 export async function POST(req: NextRequest) {
     const data = await req.json();

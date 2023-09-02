@@ -1,4 +1,4 @@
-import { getUser } from "../../../../helpers/api"
+import { getUser } from "../../../../lib/api"
 
 async function getData() {
     let data
@@ -20,7 +20,7 @@ export default async function Page() {
     const { email } = userData;
 
     return (<>
-        <div className="wrap w-fit h-fit mx-auto max-h-full bg-white dark:bg-neutral-850 my-3 px-8 py-4 rounded-md">
+        <div className="wrap w-fit h-fit mx-auto max-h-full shadow-sm shadow-white dark:shadow-neutral-850 dark:bg-neutral-850 my-8 px-8 py-4 rounded-md">
             <div className="wrapper mx-auto w-fit mb-3">
                 <h1 className="text-center h-fit px-5">Settings</h1>
             </div>

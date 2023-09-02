@@ -3,8 +3,7 @@
 import { useState, useEffect } from 'react';
 import { FieldValues } from 'react-hook-form';
 import { Loading, AbsoluteLogo } from '../../../../components';
-import { EmailNotification } from '../../../../components/users';
-import { ResetForm } from '../../../../components/users';
+import { EmailNotification, ResetForm } from '../../../../components/users';
 
 export default function Page() {
     const [submitted, setSubmitted] = useState(false);
@@ -37,6 +36,7 @@ export default function Page() {
     }
 
     return (<>
+        <AbsoluteLogo />
         <div hidden={submitted} className="wrapper rounded-lg col-start-2 col-span-3 md:col-start-3 xl:col-start-4 xl:col-span-2 row-start-2 row-span-2 bg-white shadow-md shadow-gray-400 dark:shadow-neutral-900 dark:bg-neutral-850">
             {success ? <EmailNotification message="You will be able to finish resetting your password from there." title="Reset password" email={email} /> : <ResetForm onSubmit={onSubmit} errorMessage={errorMessage} />}
         </div>

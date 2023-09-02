@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { prisma, sendEmail } from '../../../../helpers';
+import { prisma, sendEmail } from '../../../../lib';
 import { emailTemplates } from '../../../../components';
-import { userManagement } from '../../../../helpers/api';
+import { userManagement } from '../../../../lib/api';
 
 export async function POST(req: NextRequest) {
     const data = await req.json();
