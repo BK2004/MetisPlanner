@@ -27,7 +27,7 @@ export async function middleware(req: NextRequest) {
         
     }
 
-    if ((user && !user.email) || (user && !(await prisma.users.findUnique({ where: { email: user.email }})))) {
+    if ((user && !user.email) || (user && !(await prisma.users.findUnique({ where: { id: user.id }})))) {
         // Invalidate user (cookies will be deleted in later conditionals)
         user = undefined;
     }
@@ -40,7 +40,7 @@ export async function middleware(req: NextRequest) {
     }
     
     if (authRoutes.includes(req.nextUrl.pathname) && user) {
-        return NextResponse.redirect(new URL("/planner/daily", req.url));
+        return NextResponse.redirect(new URL("/planner/", req.url));
     } else if (authRoutes.includes(req.nextUrl.pathname)) {
         const res = NextResponse.next();
         res.cookies.delete("auth-token");

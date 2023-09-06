@@ -4,10 +4,13 @@ import { LogoSvg } from "."
 import ProfileIcon from "./ProfileIcon"
 import { useEffect, useState } from "react"
 import { useCookies } from "react-cookie";
+import { requestWrapper } from "../lib/client";
+import { redirect } from "next/navigation";
 
 export default function Navbar() {
     const [dropdownVisible, setDropdownVisible] = useState(false);
     const [cookies, setCookie, removeCookie] = useCookies(['theme']);
+    const [redirected, setRedirected] = useState(false);
 
     const toggleTheme = () => {
         const html = document.documentElement;
@@ -24,6 +27,21 @@ export default function Navbar() {
         });
     }
 
+    const onSignOut = () => {
+        requestWrapper.post('/api/logout').then((res) => {
+            if (res.status == 200) {
+                setRedirected(true);
+            }
+        });
+    }
+
+    // Redirect on logout
+    useEffect(() => {
+        if (redirected) {
+            redirect('/login');
+        }
+    })
+
     return (<>
             <div className="z-10 w-full relative bg-white dark:bg-neutral-850 shadow-sm shadow-white dark:shadow-neutral-850 py-3 px-16 flex justify-between">
                 <a className="brand flex" href="/">
@@ -38,7 +56,7 @@ export default function Navbar() {
                 <a className="py-2 text-slate-700 dark:text-neutral-300 hover:bg-gray-100 dark:hover:bg-neutral-900 block transition-all duration-300 ease-in-out" href="/settings">Settings</a>
                 <button onClick={ toggleTheme } className="py-2 text-slate-700 dark:text-neutral-300 hover:bg-gray-100 dark:hover:bg-neutral-900 block transition-all duration-300 ease-in-out w-full">Toggle Theme</button>
                 <hr className="mx-5 bg-neutral-200 dark:bg-neutral-700 border-0 h-[4px] rounded-lg"/>
-                <a className="py-2 text-red-500 hover:bg-gray-100 font-semibold dark:hover:bg-neutral-900 block transition-all duration-300 ease-in-out" href="/api/logout">Sign out</a>
+                <button className="w-full py-2 text-red-500 hover:bg-gray-100 font-semibold dark:hover:bg-neutral-900 block transition-all duration-300 ease-in-out" onClick={onSignOut}>Sign out</button>
             </div>
         </>
     )

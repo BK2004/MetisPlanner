@@ -4,6 +4,7 @@ import { FieldValues } from "react-hook-form";
 import { AuthForm, EmailNotification } from "../../../../components/users/";
 import { useState } from "react";
 import { Loading } from "../../../../components";
+import { requestWrapper } from "../../../../lib/client";
 
 export default function Page() {
     const [email, setEmail] = useState("");
@@ -16,14 +17,7 @@ export default function Page() {
         }
 
         setSubmitted(true);
-        fetch('/api/register', {
-            method: 'POST',
-            headers: {
-                Accept: 'application/form-data',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        }).then((res: Response) => {
+        requestWrapper.post('/api/register', data).then((res: Response) => {
             setSubmitted(false);
             if (res.status != 200) {
                 res.json().then(data => {

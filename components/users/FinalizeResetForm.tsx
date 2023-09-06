@@ -14,7 +14,7 @@ export function FinalizeResetForm({ email, resetId }: { email: string, resetId: 
 
     useEffect(() => {
         if (success) {
-            redirect("/planner/daily");
+            redirect("/planner/");
         }
     })
     

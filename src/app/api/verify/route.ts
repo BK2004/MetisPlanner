@@ -13,7 +13,7 @@ export async function GET(req: NextRequest) {
         const res = await userManagement.verifyUser({ verificationId: id });
 
         // Successful verification, send to daily planner
-        return NextResponse.redirect(new URL("/planner/daily", req.url));
+        return NextResponse.redirect(new URL("/planner/", req.url));
     } catch(e) {
         return NextResponse.redirect(new URL("/register", req.url));
     }

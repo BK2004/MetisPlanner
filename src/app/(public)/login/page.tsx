@@ -5,6 +5,7 @@ import { AuthForm } from "../../../../components/users";
 import { useState, useEffect } from "react";
 import { AbsoluteLogo, Loading } from "../../../../components";
 import { redirect } from "next/navigation";
+import { requestWrapper } from "../../../../lib/client";
 
 export default function Page() {
     const [submitted, setSubmitted] = useState(false);
@@ -13,7 +14,7 @@ export default function Page() {
 
     useEffect(() => {
         if (success) {
-            redirect("planner/daily");
+            redirect("planner/");
         }
     })
 
@@ -23,14 +24,7 @@ export default function Page() {
         }
 
         setSubmitted(true);
-        fetch('/api/login', {
-            method: 'POST',
-            headers: {
-                Accept: 'application/form-data',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        }).then((res: Response) => {
+        requestWrapper.post('/api/login', data).then((res: Response) => {
             setSubmitted(false);
             if (res.status === 200) {
                 setSuccess(true);

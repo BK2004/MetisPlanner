@@ -1,40 +1,7 @@
 'use client'
 
-import { useEffect, useState } from "react";
-
-export enum Days {
-    Sunday,
-    Monday,
-    Tuesday,
-    Wednesday,
-    Thursday,
-    Friday,
-    Saturday
-}
-
-export enum Months {
-    January,
-    February,
-    March,
-    April,
-    May,
-    June,
-    July,
-    August,
-    September,
-    October,
-    November,
-    December
-}
-
-export type CalendarType = 'Day' | 'Month' | 'Year';
-
-export type Day = {
-    date: number,
-    weekday: Days,
-    month: number,
-    year: number,
-}
+import { useState } from "react";
+import { Day, Days, Months } from '.';
 
 const daysAreEqual = (day1: Day|undefined, day2: Day|undefined) => {
     if (day1 === undefined || day2 === undefined) return undefined;
@@ -62,9 +29,8 @@ const getDaysInMonth = (month: number, year: number) => {
     return dayArr;
 }
 
-export function CalendarSelector() {
+export function CalendarSelector({ onSelect }: { onSelect: (date: Day) => void }) {
     const [date, setDate] = useState(new Date(Date.now()));
-    const [selected, setSelected] = useState<Day|undefined>(undefined);
 
     const incrementDate = (months: number, years: number) => {
         const newMonth = (date.getMonth() + months + 12) % 12;
@@ -87,9 +53,10 @@ export function CalendarSelector() {
                 <div className={`day-bar flex-1 w-full grid grid-rows-${Math.ceil(getDaysInMonth(date.getMonth(), date.getFullYear()).length / 7)} grid-cols-7 gap-[2px]`}>
                     {getDaysInMonth(date.getMonth(), date.getFullYear()).map((day: Day | undefined, i: number) => {
                         if (day !== undefined) {
-                            return (<div key={"day-" + day.date + "-" + day.month + "-" + day.year} className={`transition-all duration-300 ease-in-out ${daysAreEqual(selected, day) ? "bg-blue-400 dark:bg-blue-700" : "bg-gray-200 dark:bg-neutral-800"} col-start-${i % 7 + 1} row-start-${Math.floor(i / 7) + 1}`}>
-                                <button onClick={() => { setSelected(daysAreEqual(selected, day) ? undefined : day) }} className="w-full h-full text-left p-2">
+                            return (<div key={"day-" + day.date + "-" + day.month + "-" + day.year} className={`transition-all duration-300 ease-in-out bg-gray-200 dark:bg-neutral-800 hover:bg-gray-300 hover:dark:bg-neutral-700 col-start-${i % 7 + 1} row-start-${Math.floor(i / 7) + 1}`}>
+                                <button onClick={() => { onSelect(day); }} className="w-full h-full text-left p-2">
                                     <span className="block h-full">{day.date}</span>
+                                    {/* TODO: Load in events for selected month and cache events until page reload */}
                                 </button>
                             </div>);
                         }

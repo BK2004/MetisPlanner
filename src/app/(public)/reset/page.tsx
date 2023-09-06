@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { FieldValues } from 'react-hook-form';
 import { Loading, AbsoluteLogo } from '../../../../components';
 import { EmailNotification, ResetForm } from '../../../../components/users';
+import { requestWrapper } from '../../../../lib/api';
 
 export default function Page() {
     const [submitted, setSubmitted] = useState(false);
@@ -15,14 +16,7 @@ export default function Page() {
         if (submitted) return;
 
         setSubmitted(true);
-        fetch('api/reset', {
-            method: "POST",
-            headers: {
-                Accept: 'application/form-data',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        }).then((res: Response) => {
+        requestWrapper.post('/api/reset', data).then((res: Response) => {
             setSubmitted(false);
             if (res.status === 200) {
                 setSuccess(true);
