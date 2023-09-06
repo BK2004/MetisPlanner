@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { FieldValues } from 'react-hook-form';
 import { Loading, AbsoluteLogo } from '../../../../components';
 import { EmailNotification, ResetForm } from '../../../../components/users';
-import { requestWrapper } from '../../../../lib/api';
+import { requestWrapper } from '../../../../lib/client';
 
 export default function Page() {
     const [submitted, setSubmitted] = useState(false);
