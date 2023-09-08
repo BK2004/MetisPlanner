@@ -25,9 +25,12 @@ export enum Months {
 
 export type CalendarType = 'Day' | 'Month' | 'Year';
 
+export type Month = {
+    month: Months,
+    year: number
+}
+
 export type Day = {
     date: number,
     weekday: Days,
-    month: number,
-    year: number,
-}
+} & Month

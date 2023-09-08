@@ -2,11 +2,6 @@
 const nextConfig = {
     async redirects() {
         return [
-            {
-                source: "/planner",
-                destination: "/planner/monthly",
-                permanent: false,
-            },
         ]
     },
     env: {
