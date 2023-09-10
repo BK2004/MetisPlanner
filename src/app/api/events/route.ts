@@ -9,7 +9,7 @@ export async function GET(req: NextRequest) {
     try {
         const res = await events.getEvents(parseInt(startTime!), parseInt(endTime!));
         
-        return NextResponse.json({status: 200});
+        return NextResponse.json({events: res}, {status: 200});
     } catch(e: any) {
         return NextResponse.json({message: e}, {status: 401, statusText: e});
     }

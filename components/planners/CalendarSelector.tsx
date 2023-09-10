@@ -53,12 +53,12 @@ export function CalendarSelector({ onSelect, date, setDate }: { onSelect: (date:
 
     const loadData = () => {
         // Get data and wait for it to load
-        const data = requestWrapper.get("/api/events", {'start-time': convertToEpochSeconds(0, currMonth.month, currMonth.year), 'end-time': convertToEpochSeconds(daysInMonth(currMonth.month, currMonth.year), currMonth.month, currMonth.year)});
+        const data = requestWrapper.get("/api/events", {'start-time': convertToEpochSeconds(1, currMonth.month, currMonth.year) + 3600, 'end-time': convertToEpochSeconds(1, currMonth.month + 1, currMonth.year)});
         data.then((res) => {
             res.json().then((data) => {
                 setLoading(false);
 
-                console.log(data);
+                console.log(data.events);
             });
         });
     }
@@ -75,7 +75,7 @@ export function CalendarSelector({ onSelect, date, setDate }: { onSelect: (date:
                 <Loading />
             </div>
         </> : ""}
-        <div className="my-3 max-w-[1000px] w-full bg-white dark:bg-neutral-850 border-x-0 lg:border-x-2 border-2 border-blue-500 flex flex-1 flex-col justify-between">
+        <div className="max-w-[1000px] w-full h-full bg-white dark:bg-neutral-850 border-2 border-blue-500 flex flex-col justify-between">
             <div className="calendar-grid h-full flex flex-col">
                 <div className="yymm-bar w-full grid grid-rows-1 grid-cols-7 text-center bg-gray-200 dark:bg-neutral-800 py-[.2rem]">
                     {(Object.keys(Days).filter((val) => {
