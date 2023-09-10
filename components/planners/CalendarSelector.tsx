@@ -1,42 +1,10 @@
 'use client'
 
 import { useState, useEffect } from "react";
-import { Day, Month, Days, Months } from '.';
+import { Day, Month, Days, Months, convertToIsoTime } from '.';
 import { Loading } from "..";
 import { requestWrapper } from "../../lib/client";
-
-const daysAreEqual = (day1: Day|undefined, day2: Day|undefined) => {
-    if (day1 === undefined || day2 === undefined) return undefined;
-    return day1.date === day2.date && day1.month === day2.month && day1.year === day2.year;
-}
-
-const daysInMonth = (month: number, year: number) => {
-    return (new Date(year, month + 1, 0)).getDate();
-}
-
-const getWeekDay = (day: number, month: number, year: number) => {
-    return new Date(year, month, day).getDay();
-}
-
-const getDaysInMonth = (month: number, year: number) => {
-    const dayArr: Day[] = Array(35).fill(undefined);
-
-    // Offset index by starting day of the week
-    let arrIndex = getWeekDay(1, month, year);
-
-    for (let i = 1; i <= daysInMonth(month, year); i++) {
-        dayArr[arrIndex++] = {date: i, weekday: Object.values(Days)[getWeekDay(i, month, year)] as Days, month, year};
-    }
-
-    return dayArr;
-}
-
-const convertToEpochSeconds = (day: number, month: number, year: number) => {
-    const date = new Date(year, month, day);
-    const secondsSinceEpoch = Math.floor(date.getTime()/1000);
-
-    return secondsSinceEpoch;
-}
+import { convertToEpochSeconds, getDaysInMonth } from ".";
 
 export function CalendarSelector({ onSelect, date, setDate }: { onSelect: (date: Day) => void, date: Day | undefined, setDate: any }) {
     const [currMonth, setCurrMonth] = useState<Month>({ month: (new Date(Date.now()).getMonth() as Months), year: (new Date(Date.now()).getFullYear()) })
@@ -47,13 +15,13 @@ export function CalendarSelector({ onSelect, date, setDate }: { onSelect: (date:
         const newYear = (currMonth.year + years + Math.floor((currMonth.month + months) / 12));
 
         setCurrMonth({month: newMonth as Months, year: newYear });
-        setLoading(true);
-        loadData();
     }
 
     const loadData = () => {
         // Get data and wait for it to load
-        const data = requestWrapper.get("/api/events", {'start-time': convertToEpochSeconds(1, currMonth.month, currMonth.year) + 3600, 'end-time': convertToEpochSeconds(1, currMonth.month + 1, currMonth.year)});
+        setLoading(true);
+
+        const data = requestWrapper.get("/api/events", {'start-time': convertToIsoTime(1, currMonth.month, currMonth.year, 3600), 'end-time': convertToIsoTime(1, currMonth.month + 1, currMonth.year)});
         data.then((res) => {
             res.json().then((data) => {
                 setLoading(false);
@@ -64,9 +32,9 @@ export function CalendarSelector({ onSelect, date, setDate }: { onSelect: (date:
     }
 
     useEffect(() => {
-        // Load data on startup
+        // Load data on change
         loadData();
-    }, []);
+    }, [currMonth, date]);
 
     return (<>
         {loading ? <>
@@ -89,7 +57,7 @@ export function CalendarSelector({ onSelect, date, setDate }: { onSelect: (date:
                     {getDaysInMonth(currMonth.month, currMonth.year).map((day: Day | undefined, i: number) => {
                         if (day !== undefined) {
                             return (<div key={"day-" + day.date + "-" + day.month + "-" + day.year} className={`transition-all duration-300 ease-in-out bg-gray-200 dark:bg-neutral-800 hover:bg-gray-300 hover:dark:bg-neutral-700 col-start-${i % 7 + 1} row-start-${Math.floor(i / 7) + 1}`}>
-                                <button onClick={() => { setLoading(true); setDate(day); loadData(); }} className="w-full h-full text-left p-2">
+                                <button onClick={() => { setDate(day); loadData(); }} className="w-full h-full text-left p-2">
                                     <span className="block h-full">{day.date}</span>
                                     {/* TODO: Load in events for selected month */}
                                 </button>
