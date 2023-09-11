@@ -6,6 +6,8 @@ import { DayPopup } from "../../../../components/planners/DayPopup";
 import { CreateSidebar } from "../../../../components/planners";
 import { FieldValues } from "react-hook-form";
 import { Loading } from "../../../../components";
+import { requestWrapper } from "../../../../lib/client";
+import { convertMsToIsoTime } from "../../../../components/planners";
 
 export default function Page() {
     const [date, setDate] = useState(undefined);
@@ -15,6 +17,10 @@ export default function Page() {
         if (creating) return;
         
         setCreating(true);
+
+        requestWrapper.post('/api/events', { label: data.label, 'start-time': convertMsToIsoTime(Number(data.start)), 'end-time': convertMsToIsoTime(Number(data.end)) }).then((res) => {
+            setCreating(false);
+        }).catch((e) => { setCreating(false); })
     }
 
     return (<><div className="w-full flex flex-1 flex-row justify-between">

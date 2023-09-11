@@ -18,8 +18,8 @@ export function DaySelector({ selected, selectDate }: { selected: Day, selectDat
             <select onChange={(e) => {
                 setMonth({ month: month.month, year: Number(e.target.value) });
             }} className="outline-0 dark:bg-neutral-750 bg-gray-100 ring-gray-400 dark:ring-neutral-900 ring-1 focus:ring-2 focus:ring-blue-600 dark:focus:ring-blue-500 ring-inset rounded-md px-1 py-2 transition-all duration-100 ease-linear bg-transparent border-0 mx-2">
-                <option value="0">2023</option>
-                <option value="1">2024</option>
+                <option value="2023">2023</option>
+                <option value="2024">2024</option>
             </select>
         </div>
         <div className={`py-3 day-choices w-full grid grid-cols-7 grid-rows-${Math.ceil(getDaysInMonth(month.month, month.year).length / 7)}`}>

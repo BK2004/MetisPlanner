@@ -3,10 +3,27 @@ import { prisma } from "..";
 
 export const events = {
     getEvents: getEvents,
+    createEvent: createEvent,
+    extractTimesGET: extractTimesGET,
+    extractTimesPOST: extractTimesPOST,
 }
 
-async function getEvents(startTime: number, endTime: number) {
-    if (Number.isNaN(startTime) || Number.isNaN(endTime)) throw 'Invalid arguments';
+function extractTimesGET(params: URLSearchParams) {
+    const startTime = new Date(params.get("start-time") as string);
+    const endTime = new Date(params.get("end-time") as string);
+
+    return [startTime, endTime];
+}
+
+function extractTimesPOST(data: any) {
+    const startTime = new Date(data['start-time']);
+    const endTime = new Date(data['end-time']);
+
+    return [startTime, endTime];
+}
+
+async function getEvents(startTime: Date, endTime: Date) {
+    if (!startTime || !endTime) throw 'Invalid args';
 
     const user = await getUser();
     if (!user) throw 'User not logged in.';
@@ -26,8 +43,28 @@ async function getEvents(startTime: number, endTime: number) {
         content: true,
         user: false,
         userId: false,
-        id: false
+        id: true
     } });
 
     return events;
+}
+
+async function createEvent(startTime: Date, endTime: Date, label: string) {
+    if (!startTime || !endTime || !label) throw 'Invalid args.';
+
+    const user = await getUser();
+    if (!user) throw 'User not logged in';
+
+    const createRes = await prisma.users.update({ 
+        where: { id: user.id as string }, 
+        data: {
+            events: {
+                create: [
+                    { content: label, start: startTime, end: endTime }
+                ]
+            }
+        }
+    });
+
+    return createRes;
 }

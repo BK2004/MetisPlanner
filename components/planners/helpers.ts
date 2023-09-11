@@ -28,8 +28,8 @@ export const getDaysInMonth = (month: number, year: number) => {
     return dayArr;
 }
 
-export const convertToEpochSeconds = (day: number, month: number, year: number) => {
-    const date = new Date(year, month, day);
+export const convertToEpochSeconds = (day: number, month: number, year: number, addSeconds = 0) => {
+    const date = new Date(new Date(year, month, day).getTime() + addSeconds * 1000);
     const secondsSinceEpoch = Math.floor(date.getTime()/1000);
 
     return secondsSinceEpoch;
@@ -37,6 +37,10 @@ export const convertToEpochSeconds = (day: number, month: number, year: number) 
 
 export const convertToIsoTime = (day: number, month: number, year: number, addSeconds = 0) => {
     return new Date(new Date(year, month, day).getTime() + addSeconds*1000).toISOString();
+}
+
+export const convertMsToIsoTime = (ms: number) => {
+    return new Date(ms).toISOString();
 }
 
 export const getTimesForDay = (day: number, month: number, year: number) => {
