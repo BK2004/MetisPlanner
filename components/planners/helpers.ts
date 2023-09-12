@@ -43,6 +43,10 @@ export const convertMsToIsoTime = (ms: number) => {
     return new Date(ms).toISOString();
 }
 
+export const convertIsoToMsTime = (iso: string) => {
+    return new Date(iso).getTime();
+}
+
 export const getTimesForDay = (day: number, month: number, year: number) => {
     let t = Number(new Date(year, month, day)) + 3600000; // Time at 1 AM on day
     const endTime = Number(new Date(year, month, day + 1)); // Time at 12 AM on next day

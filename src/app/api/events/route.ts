@@ -20,10 +20,10 @@ export async function POST(req: NextRequest) {
     try {
         const [startTime, endTime] = events.extractTimesPOST(data);
 
-        const res = events.createEvent(startTime, endTime, data.label);
+        const res = await events.createEvent(startTime, endTime, data.label);
 
         return NextResponse.json({ success: true });
     } catch (e) {
-        return NextResponse.json({ message: e, success: false});
+        return NextResponse.json({ message: e, success: false });
     }
 }

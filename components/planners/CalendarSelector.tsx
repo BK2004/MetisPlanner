@@ -1,14 +1,11 @@
 'use client'
 
 import { useState, useEffect } from "react";
-import { Day, Month, Days, Months, convertToIsoTime } from '.';
-import { Loading } from "..";
-import { requestWrapper } from "../../lib/client";
-import { convertToEpochSeconds, getDaysInMonth } from ".";
+import { Day, Month, Days, Months, convertToIsoTime, daysAreEqual } from '.';
+import { getDaysInMonth } from ".";
 
-export function CalendarSelector({ onSelect, date, setDate }: { onSelect: (date: Day) => void, date: Day | undefined, setDate: any }) {
+export function CalendarSelector({ onSelect, date, setDate, data, loadData }: { onSelect: (date: Day) => void, date: Day | undefined, setDate: any, data: any, loadData: (targetTimeline: { start: string, end: string }) => void }) {
     const [currMonth, setCurrMonth] = useState<Month>({ month: (new Date(Date.now()).getMonth() as Months), year: (new Date(Date.now()).getFullYear()) })
-    const [loading, setLoading] = useState(true);
 
     const incrementDate = (months: number, years: number) => {
         const newMonth = (currMonth.month + months + 12) % 12;
@@ -17,32 +14,26 @@ export function CalendarSelector({ onSelect, date, setDate }: { onSelect: (date:
         setCurrMonth({month: newMonth as Months, year: newYear });
     }
 
-    const loadData = () => {
-        // Get data and wait for it to load
-        setLoading(true);
+    const getEventsOnDay = (day: Day) => {
+        const dayEvents = [];
 
-        const data = requestWrapper.get("/api/events", {'start-time': convertToIsoTime(1, currMonth.month, currMonth.year, 3600), 'end-time': convertToIsoTime(1, currMonth.month + 1, currMonth.year)});
-        data.then((res) => {
-            res.json().then((data) => {
-                setLoading(false);
+        for (let event of data.events) {
+            const eventDate = new Date(event.start);
 
-                console.log(data.events);
-            });
-        });
+            if (daysAreEqual(day, { date: eventDate.getDate(), month: eventDate.getMonth(), weekday: eventDate.getDay(), year: eventDate.getFullYear() })) {
+                dayEvents.push(event);
+            }
+        }
+
+        return dayEvents;
     }
 
     useEffect(() => {
         // Load data on change
-        loadData();
-    }, [currMonth, date]);
+        loadData({start: convertToIsoTime(1, currMonth.month, currMonth.year, 3600), end: convertToIsoTime(1, currMonth.month + 1, currMonth.year)});
+    }, [currMonth]);
 
     return (<>
-        {loading ? <>
-            <div className="fixed top-0 left-0 w-full h-full bg-black opacity-30 z-50"></div>
-            <div className="fixed top-0 left-0 w-full h-full bg-transparent z-60">
-                <Loading />
-            </div>
-        </> : ""}
         <div className="max-w-[1000px] w-full h-full bg-white dark:bg-neutral-850 border-2 border-blue-500 flex flex-col justify-between">
             <div className="calendar-grid h-full flex flex-col">
                 <div className="yymm-bar w-full grid grid-rows-1 grid-cols-7 text-center bg-gray-200 dark:bg-neutral-800 py-[.2rem]">
@@ -53,13 +44,18 @@ export function CalendarSelector({ onSelect, date, setDate }: { onSelect: (date:
                     })}
                 </div>
                 <hr className="border-0 bg-white dark:bg-neutral-850 h-[2px] w-full"></hr>
-                <div className={`day-bar flex-1 w-full grid grid-rows-${Math.ceil(getDaysInMonth(currMonth.month, currMonth.year).length / 7)} grid-cols-7 gap-[2px]`}>
+                <div className={`day-bar flex-1 w-full grid auto-rows-[1fr] grid-cols-7 gap-[2px]`}>
                     {getDaysInMonth(currMonth.month, currMonth.year).map((day: Day | undefined, i: number) => {
                         if (day !== undefined) {
                             return (<div key={"day-" + day.date + "-" + day.month + "-" + day.year} className={`transition-all duration-300 ease-in-out bg-gray-200 dark:bg-neutral-800 hover:bg-gray-300 hover:dark:bg-neutral-700 col-start-${i % 7 + 1} row-start-${Math.floor(i / 7) + 1}`}>
-                                <button onClick={() => { setDate(day); loadData(); }} className="w-full h-full text-left p-2">
-                                    <span className="block h-full">{day.date}</span>
-                                    {/* TODO: Load in events for selected month */}
+                                <button onClick={() => { setDate(day); }} className="w-full h-full text-left p-2 flex flex-col justify-between">
+                                    <span className="block">{day.date}</span>
+                                    {/* Load events for current month */}
+                                    <div className="w-full">
+                                        {getEventsOnDay(day).filter((val, i) => i < 3).map((value) => {
+                                            return (<div className="mx-auto mb-1 px-1 last:mb-0 w-[90%] overflow-x-hidden whitespace-nowrap border-blue-500 border-l-4 rounded-l-none rounded-md bg-white dark:bg-neutral-850" key={value.id}>{value.content}</div>);
+                                        })}
+                                    </div>
                                 </button>
                             </div>);
                         }

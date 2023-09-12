@@ -16,6 +16,9 @@ module.exports = {
     'row-start-5',
     'row-start-6',
     'row-start-7',
+    'h-1/5',
+    'h-1/6',
+    'h-1/7',
   ],
   content: [
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
