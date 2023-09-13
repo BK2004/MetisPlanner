@@ -1,6 +1,6 @@
 'use client'
 
-import { CalendarSelector, Day, Days, Months, convertIsoToMsTime, convertToIsoTime, daysAreEqual } from "../../../../components/planners";
+import { CalendarSelector, Day, Days, EventSettings, Months, convertIsoToMsTime, convertToIsoTime, daysAreEqual } from "../../../../components/planners";
 import { useState } from 'react';
 import { DayPopup } from "../../../../components/planners/DayPopup";
 import { CreateSidebar } from "../../../../components/planners";
@@ -14,6 +14,7 @@ export default function Page() {
     const [creating, setCreating] = useState(false);
     const [loading, setLoading] = useState(true);
     const [data, setData] = useState<{ events: { id: string, start: string, end: string, content: string }[], start: string, end: string }>({ events: [], start: "", end: "" });
+    const [openEvent, setOpenEvent] = useState("");
 
     const createEvent = (request: FieldValues) => {
         if (creating) return;
@@ -58,13 +59,24 @@ export default function Page() {
         return dayEvents;
     }
 
-    return (<><div className="w-full flex flex-1 flex-row justify-between">
+    const getEvent = (eventId: string) => {
+        for (const event of data.events) {
+            if (event.id === eventId) {
+                return event;
+            }
+        }
+
+        return undefined;
+    }
+
+    return (<><div className="w-full flex flex-1 flex-row justify-between scroll-none">
         <div className="left-bar w-[350px] h-full border-t-4 border-gray-200 dark:border-neutral-800"><CreateSidebar onSubmit={createEvent} /></div>
         <div className="h-full py-3 flex-1 flex align-middle justify-center">
             <CalendarSelector data={data} loadData={loadData} date={date} setDate={setDate} />
         </div>
     </div>
-    {date !== undefined ? <DayPopup date={date} data={getEventsOnDay(date)} onClose={() => { setDate(undefined); }} /> : ""}
+    {date !== undefined ? <DayPopup date={date} data={getEventsOnDay(date)} onClose={() => { setDate(undefined); }} openSettings={setOpenEvent} /> : ""}
+    {openEvent !== "" && getEvent(openEvent) !== undefined ? <EventSettings data={getEvent(openEvent)} close={() => {setOpenEvent("")}} /> : ""}
     {creating || loading ? <>
         <div className="fixed top-0 left-0 w-full h-full bg-black opacity-30 z-50"></div>
         <div className="fixed top-0 left-0 w-full h-full bg-transparent z-60">

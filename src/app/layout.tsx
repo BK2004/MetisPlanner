@@ -17,8 +17,8 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={cookies().get("theme")?.value === "Dark" ? "dark" : ""}>
-      <body className={`bg-gray-200 dark:bg-neutral-800 text-slate-700 dark:text-neutral-300 max-w-full w-screen min-h-screen ${font.className}`}>
+    <html lang="en" className={cookies().get("theme")?.value === "Dark" ? "dark scroll-none" : "scroll-none"}>
+      <body className={`bg-gray-200 dark:bg-neutral-800 text-slate-700 dark:text-neutral-300 max-w-full w-screen min-h-screen scroll-none ${font.className}`}>
         {children}
         <Analytics />
       </body>

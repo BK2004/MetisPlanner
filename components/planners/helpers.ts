@@ -77,3 +77,9 @@ export const getTimesForDay = (day: number, month: number, year: number) => {
 
     return res;
 }
+
+export const convertIsoToDay = (iso: string) => {
+    const d = new Date(iso);
+
+    return { date: d.getDate(), weekday: d.getDay(), month: d.getMonth(), year: d.getFullYear() }
+}
