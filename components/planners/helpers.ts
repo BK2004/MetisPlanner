@@ -47,6 +47,22 @@ export const convertIsoToMsTime = (iso: string) => {
     return new Date(iso).getTime();
 }
 
+export const getTimeString = (iso: string) => {
+    const d = new Date(iso);
+    const minutes = d.getMinutes();
+    let hours = d.getHours();
+    let amOrPm = "AM";
+
+    if (hours >= 12) {
+        amOrPm = "PM";
+    }
+    if (hours > 12) {
+        hours %= 12;
+    }
+
+    return `${hours < 10 ? "0" + hours : hours}:${minutes < 10 ? "0" + minutes : minutes} ${amOrPm}`;
+}
+
 export const getTimesForDay = (day: number, month: number, year: number) => {
     let t = Number(new Date(year, month, day)) + 3600000; // Time at 1 AM on day
     const endTime = Number(new Date(year, month, day + 1)); // Time at 12 AM on next day

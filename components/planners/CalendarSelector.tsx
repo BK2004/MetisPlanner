@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { Day, Month, Days, Months, convertToIsoTime, daysAreEqual } from '.';
 import { getDaysInMonth } from ".";
 
-export function CalendarSelector({ onSelect, date, setDate, data, loadData }: { onSelect: (date: Day) => void, date: Day | undefined, setDate: any, data: any, loadData: (targetTimeline: { start: string, end: string }) => void }) {
+export function CalendarSelector({  date, setDate, data, loadData }: { date: Day | undefined, setDate: any, data: any, loadData: (targetTimeline: { start: string, end: string }) => void }) {
     const [currMonth, setCurrMonth] = useState<Month>({ month: (new Date(Date.now()).getMonth() as Months), year: (new Date(Date.now()).getFullYear()) })
 
     const incrementDate = (months: number, years: number) => {
@@ -53,7 +53,7 @@ export function CalendarSelector({ onSelect, date, setDate, data, loadData }: { 
                                     {/* Load events for current month */}
                                     <div className="w-full">
                                         {getEventsOnDay(day).filter((val, i) => i < 3).map((value) => {
-                                            return (<div className="mx-auto mb-1 px-1 last:mb-0 w-[90%] overflow-x-hidden whitespace-nowrap border-blue-500 border-l-4 rounded-l-none rounded-md bg-white dark:bg-neutral-850" key={value.id}>{value.content}</div>);
+                                            return (<div className="mx-auto text-ellipsis mb-1 px-1 last:mb-0 w-[90%] overflow-x-hidden whitespace-nowrap border-blue-500 border-l-4 rounded-l-none rounded-md bg-white dark:bg-neutral-850" key={value.id}>{value.content}</div>);
                                         })}
                                     </div>
                                 </button>

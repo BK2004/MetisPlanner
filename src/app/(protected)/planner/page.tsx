@@ -1,6 +1,6 @@
 'use client'
 
-import { CalendarSelector, Day, Days, Months, convertIsoToMsTime, convertToIsoTime } from "../../../../components/planners";
+import { CalendarSelector, Day, Days, Months, convertIsoToMsTime, convertToIsoTime, daysAreEqual } from "../../../../components/planners";
 import { useState } from 'react';
 import { DayPopup } from "../../../../components/planners/DayPopup";
 import { CreateSidebar } from "../../../../components/planners";
@@ -13,7 +13,7 @@ export default function Page() {
     const [date, setDate] = useState(undefined);
     const [creating, setCreating] = useState(false);
     const [loading, setLoading] = useState(true);
-    const [data, setData] = useState({ events: [], start: "", end: "" });
+    const [data, setData] = useState<{ events: { id: string, start: string, end: string, content: string }[], start: string, end: string }>({ events: [], start: "", end: "" });
 
     const createEvent = (request: FieldValues) => {
         if (creating) return;
@@ -44,13 +44,27 @@ export default function Page() {
         });
     }
 
+    const getEventsOnDay = (day: Day) => {
+        const dayEvents = [];
+
+        for (let event of data.events) {
+            const eventDate = new Date(event.start);
+
+            if (daysAreEqual(day, { date: eventDate.getDate(), month: eventDate.getMonth(), weekday: eventDate.getDay(), year: eventDate.getFullYear() })) {
+                dayEvents.push(event);
+            }
+        }
+
+        return dayEvents;
+    }
+
     return (<><div className="w-full flex flex-1 flex-row justify-between">
         <div className="left-bar w-[350px] h-full border-t-4 border-gray-200 dark:border-neutral-800"><CreateSidebar onSubmit={createEvent} /></div>
         <div className="h-full py-3 flex-1 flex align-middle justify-center">
-            <CalendarSelector data={data} loadData={loadData} onSelect={(date: Day) => {}} date={date} setDate={setDate} />
+            <CalendarSelector data={data} loadData={loadData} date={date} setDate={setDate} />
         </div>
     </div>
-    {date !== undefined ? <DayPopup date={date} onClose={() => { setDate(undefined); }} /> : ""}
+    {date !== undefined ? <DayPopup date={date} data={getEventsOnDay(date)} onClose={() => { setDate(undefined); }} /> : ""}
     {creating || loading ? <>
         <div className="fixed top-0 left-0 w-full h-full bg-black opacity-30 z-50"></div>
         <div className="fixed top-0 left-0 w-full h-full bg-transparent z-60">

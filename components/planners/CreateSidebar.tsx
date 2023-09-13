@@ -36,7 +36,9 @@ export function CreateSidebar({ onSubmit }: { onSubmit: (data: { label: string, 
             return;
         }
 
-        onSubmit(fields)
+        onSubmit(fields);
+
+        setFields({ label: "", start: "", end: ""});
     }
 
     const selectDate = (val: Day) => {
@@ -56,14 +58,14 @@ export function CreateSidebar({ onSubmit }: { onSubmit: (data: { label: string, 
         <form className="flex flex-1 flex-col align-middle justify-start" onSubmit={validateForm}>
             <div className="input-group mb-4 w-4/5 mx-auto">
                 <label htmlFor="label">Event Name</label>
-                <input ref={labelRef} onChange={(e) => { setFields({ label: e.target.value, start: fields.start, end: fields.end }) }} required name="label" id="label" className="outline-0 dark:bg-neutral-750 bg-gray-100 ring-gray-400 dark:ring-neutral-900 ring-1 focus:ring-2 focus:ring-blue-600 dark:focus:ring-blue-500 ring-inset border-0 rounded-md px-3 py-2 w-full transition-all duration-100 ease-linear" type="text"></input>
+                <input value={fields.label} ref={labelRef} onChange={(e) => { setFields({ label: e.target.value, start: fields.start, end: fields.end }) }} required name="label" id="label" className="outline-0 dark:bg-neutral-750 bg-gray-100 ring-gray-400 dark:ring-neutral-900 ring-1 focus:ring-2 focus:ring-blue-600 dark:focus:ring-blue-500 ring-inset border-0 rounded-md px-3 py-2 w-full transition-all duration-100 ease-linear" type="text"></input>
             </div>
             <div className="input-group mb-4 w-4/5 mx-auto flex flex-row justify-between">
                 <div className="dropdown-group w-2/5">
                     <label htmlFor="start">Start Time</label>
                     <select ref={startRef} required onChange={ (e) => {
                         setFields({label: fields.label, start: e.target.value, end: fields.end });
-                    }} value={fields.start} name="start" id="start" className="appearance-none outline-0 dark:bg-neutral-750 bg-gray-100 ring-gray-400 dark:ring-neutral-900 ring-1 focus:ring-2 focus:ring-blue-600 dark:focus:ring-blue-500 ring-inset border-0 rounded-md px-3 py-2 w-full transition-all duration-100 ease-linear">
+                    }} value={fields.start} name="start" id="start" className="scroll-none appearance-none outline-0 dark:bg-neutral-750 bg-gray-100 ring-gray-400 dark:ring-neutral-900 ring-1 focus:ring-2 focus:ring-blue-600 dark:focus:ring-blue-500 ring-inset border-0 rounded-md px-3 py-2 w-full transition-all duration-100 ease-linear">
                         <option value=""></option>
                         {getTimesForDay(selectedDate.date, selectedDate.month, selectedDate.year).map(({ value, label }) => {
                             return (<option key={`start-${value}`} value={value}>{label}</option>);
@@ -74,7 +76,7 @@ export function CreateSidebar({ onSubmit }: { onSubmit: (data: { label: string, 
                     <label htmlFor="end" className="block text-right">End Time</label>
                     <select ref={endRef} required onChange={ (e) => {
                         setFields({label: fields.label, end: e.target.value, start: fields.start });
-                    }} value={fields.end} name="end" id="end" className="appearance-none outline-0 dark:bg-neutral-750 bg-gray-100 ring-gray-400 dark:ring-neutral-900 ring-1 focus:ring-2 focus:ring-blue-600 dark:focus:ring-blue-500 ring-inset border-0 rounded-md px-3 py-2 w-full transition-all duration-100 ease-linear">
+                    }} value={fields.end} name="end" id="end" className="scroll-none appearance-none outline-0 dark:bg-neutral-750 bg-gray-100 ring-gray-400 dark:ring-neutral-900 ring-1 focus:ring-2 focus:ring-blue-600 dark:focus:ring-blue-500 ring-inset border-0 rounded-md px-3 py-2 w-full transition-all duration-100 ease-linear">
                         <option value=""></option>
                         {getTimesForDay(selectedDate.date, selectedDate.month, selectedDate.year).map(({ value, label }) => {
                             return (<option key={`end-${value}`} value={value}>{label}</option>);
