@@ -10,14 +10,14 @@ export function DaySelector({ selected, selectDate }: { selected: Day, selectDat
         <div className="top-bar w-full flex flex-row justify-center mx-auto">
             <select value={month.month} onChange={(e) => {
                 setMonth({ month: Number(e.target.value), year: month.year });
-            }} className="outline-0 dark:bg-neutral-750 bg-gray-100 ring-gray-400 dark:ring-neutral-900 ring-1 focus:ring-2 focus:ring-blue-600 dark:focus:ring-blue-500 ring-inset rounded-md px-1 py-2 transition-all duration-100 ease-linear bg-transparent border-0 mx-2">
+            }} className="outline-0 bg-inherit focus:bg-gray-100 dark:focus:bg-neutral-700 focus:border-b-0 ring-gray-400 dark:ring-neutral-900 ring-0 appearance-none border-b-2 border-gray-200 dark:border-neutral-750 focus:ring-2 focus:ring-blue-600 dark:focus:ring-blue-500 ring-inset rounded-md px-2 text-lg transition-all duration-100 ease-linear border-0 mx-2">
                 {Object.keys(Months).filter((val) => !isNaN(Number(val))).map((value: string) => {
                     return (<option key={"month-select-" + value} value={value}>{String(Months[Number(value)])}</option>);
                 })}
             </select>
             <select onChange={(e) => {
                 setMonth({ month: month.month, year: Number(e.target.value) });
-            }} className="outline-0 dark:bg-neutral-750 bg-gray-100 ring-gray-400 dark:ring-neutral-900 ring-1 focus:ring-2 focus:ring-blue-600 dark:focus:ring-blue-500 ring-inset rounded-md px-1 py-2 transition-all duration-100 ease-linear bg-transparent border-0 mx-2">
+            }} className="outline-0 bg-inherit focus:bg-gray-100 dark:focus:bg-neutral-700 focus:border-b-0 ring-gray-400 dark:ring-neutral-900 ring-0 appearance-none border-b-2 border-gray-200 dark:border-neutral-750 focus:ring-2 focus:ring-blue-600 dark:focus:ring-blue-500 ring-inset rounded-md px-2 text-lg transition-all duration-100 ease-linear border-0 mx-2">
                 <option value="2023">2023</option>
                 <option value="2024">2024</option>
             </select>
@@ -26,7 +26,7 @@ export function DaySelector({ selected, selectDate }: { selected: Day, selectDat
             {getDaysInMonth(month.month, month.year).map((day: Day | undefined, i: number) => {
                 if (day !== undefined) {
                     return (<div key={"day-" + day.date + "-" + day.month + "-" + day.year} className={`transition-all duration-300 ease-in-out col-start-${i % 7 + 1} row-start-${Math.floor(i / 7) + 1}`}>
-                        <button onClick={() => { selectDate(day); }} className={`transition-all duration-300 ease-in-out w-8 h-8 text-center rounded-3xl hover:bg-blue-500 ${daysAreEqual(selected, day) ? "bg-blue-500 hover:bg-blue-300" : "hover:bg-opacity-30"}`}>
+                        <button onClick={() => { selectDate(day); }} className={`transition-all duration-300 ease-in-out w-8 h-8 text-center rounded-3xl hover:bg-blue-500 ${daysAreEqual(selected, day) ? "bg-blue-500 hover:bg-blue-300 text-white" : "hover:bg-opacity-30"}`}>
                             {day.date}
                         </button>
                     </div>);
