@@ -15,6 +15,7 @@ export default function Page() {
     const [loading, setLoading] = useState(true);
     const [data, setData] = useState<{ events: { id: string, start: string, end: string, content: string }[], start: string, end: string }>({ events: [], start: "", end: "" });
     const [openEvent, setOpenEvent] = useState("");
+    const [showSettings, setShowSettings] = useState(false);
 
     const createEvent = (request: FieldValues) => {
         if (creating) return;
@@ -70,9 +71,14 @@ export default function Page() {
     }
 
     return (<><div className="w-full flex flex-1 flex-row justify-between scroll-none">
-        <div className="left-bar w-[350px] h-full border-t-4 border-gray-200 dark:border-neutral-800"><CreateSidebar onSubmit={createEvent} /></div>
+        <div className={`absolute ${showSettings ? "" : "-translate-x-full lg:translate-x-0"} lg:relative left-bar w-[350px] h-full border-t-4 border-t-gray-200 dark:border-t-neutral-800 shadow-lg z-20 transition-all duration-300 ease-in-out`}>
+            <CreateSidebar onSubmit={createEvent} />
+            <button onClick={() => setShowSettings(!showSettings)} className="lg:hidden toggle-arrow absolute top-1/2 -translate-y-1/2 right-0 translate-x-1/2 text-white bg-blue-500 dark:bg-blue-600 w-10 h-10 rounded-full a">
+                {showSettings ? "<" : ">"}
+            </button>
+        </div>
         <div className="h-full py-3 flex-1 flex align-middle justify-center">
-            <CalendarSelector data={data} loadData={loadData} date={date} setDate={setDate} />
+            <CalendarSelector data={data} openEvent={setOpenEvent} loadData={loadData} date={date} setDate={setDate} />
         </div>
     </div>
     {date !== undefined ? <DayPopup date={date} data={getEventsOnDay(date)} onClose={() => { setDate(undefined); }} openSettings={setOpenEvent} /> : ""}

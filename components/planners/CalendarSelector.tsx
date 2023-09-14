@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { Day, Month, Days, Months, convertToIsoTime, daysAreEqual } from '.';
 import { getDaysInMonth } from ".";
 
-export function CalendarSelector({  date, setDate, data, loadData }: { date: Day | undefined, setDate: any, data: any, loadData: (targetTimeline: { start: string, end: string }) => void }) {
+export function CalendarSelector({  date, openEvent, setDate, data, loadData }: { date: Day | undefined, openEvent: (eventId: string) => void, setDate: any, data: any, loadData: (targetTimeline: { start: string, end: string }) => void }) {
     const [currMonth, setCurrMonth] = useState<Month>({ month: (new Date(Date.now()).getMonth() as Months), year: (new Date(Date.now()).getFullYear()) })
 
     const incrementDate = (months: number, years: number) => {
@@ -47,17 +47,19 @@ export function CalendarSelector({  date, setDate, data, loadData }: { date: Day
                 <div className={`day-bar flex-1 w-full grid auto-rows-[1fr] grid-cols-7 gap-[2px]`}>
                     {getDaysInMonth(currMonth.month, currMonth.year).map((day: Day | undefined, i: number) => {
                         if (day !== undefined) {
-                            return (<div key={"day-" + day.date + "-" + day.month + "-" + day.year} className={`col-start-${i % 7 + 1} row-start-${Math.floor(i / 7) + 1}`}>
-                                <button onClick={() => { setDate(day); }} className="w-full h-full text-left p-2 flex flex-col justify-between transition-all duration-300 ease-in-out bg-gray-200 dark:bg-neutral-800 hover:bg-gray-300 hover:dark:bg-neutral-700">
-                                    <span className="block">{day.date}</span>
-                                    {/* Load events for current month */}
-                                    <div className="w-full">
-                                        {getEventsOnDay(day).filter((val, i) => i < 3).map((value) => {
-                                            return (<div className="hover:bg-gray-200 hover:dark:bg-neutral-750 hover:border-blue-400 transition-all duration-300 ease-in-out text-ellipsis mb-1 px-1 last:mb-0 w-full overflow-x-hidden whitespace-nowrap border-blue-500 border-l-4 rounded-l-none rounded-md bg-white dark:bg-neutral-850" key={value.id}>{value.content}</div>);
-                                        })}
-                                    </div>
-                                </button>-
-                            </div>);
+                            return (<>
+                                <div key={"day-" + day.date + "-" + day.month + "-" + day.year} className={`col-start-${i % 7 + 1} row-start-${Math.floor(i / 7) + 1}`}>
+                                    <button onClick={() => { setDate(day); }} className="w-full h-full text-left p-2 flex flex-col justify-between transition-all duration-300 ease-in-out bg-gray-200 dark:bg-neutral-800 hover:bg-gray-300 hover:dark:bg-neutral-700">
+                                        <span className="block">{day.date}</span>
+                                        {/* Load events for current month */}
+                                    </button>
+                                </div>
+                                <div key={"day-" + day.date + "-" + day.month + "-" + day.year + "-events"} className={`p-2 w-full h-full relative pointer-events-none z-10 flex flex-col justify-end col-start-${i % 7 + 1} row-start-${Math.floor(i / 7) + 1}`}>
+                                    {getEventsOnDay(day).filter((val, i) => i < 3).map((value) => {
+                                        return (<button onClick={() => openEvent(value.id)} className="pointer-events-auto hover:bg-gray-200 hover:dark:bg-neutral-750 hover:border-blue-400 transition-all duration-300 ease-in-out text-ellipsis mb-1 px-1 last:mb-0 w-full overflow-x-hidden whitespace-nowrap border-blue-500 border-l-4 rounded-l-none rounded-md bg-white dark:bg-neutral-850" key={value.id}>{value.content}</button>);
+                                    })}
+                                </div>
+                            </>);
                         }
                     })}
                 </div>

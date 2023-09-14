@@ -49,7 +49,7 @@ export function CreateSidebar({ onSubmit }: { onSubmit: (data: { label: string, 
         setFields({ label: fields.label, start: String(newStart), end: String(newEnd) });
     }
 
-    return (<div className="flex flex-col justify-start align-middle h-full w-full bg-white dark:bg-neutral-850">
+    return (<div className="flex flex-col justify-start align-middle h-full w-full bg-white dark:bg-neutral-850 border-r-2 border-r-blue-500 dark:border-r-blue-600">
         <h1 className="text-center pt-4 text-3xl">Create event</h1>
         <hr className="border-0 h-1 my-2 bg-gray-200 dark:bg-neutral-750 w-5/6 mx-auto rounded-lg" />
         <div className="w-4/5 mx-auto">
