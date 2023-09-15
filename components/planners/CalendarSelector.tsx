@@ -1,10 +1,10 @@
 'use client'
 
-import { useState, useEffect } from "react";
-import { Day, Month, Days, Months, convertToIsoTime, daysAreEqual, convertToEpochSeconds } from '.';
+import { useEffect } from "react";
+import { Day, Month, Days, Months, convertToIsoTime, convertToEpochSeconds } from '.';
 import { getDaysInMonth } from ".";
 
-export function CalendarSelector({  date, openEvent, setDate, data, loadData, currMonth, setCurrMonth }: { date: Day | undefined, openEvent: (eventId: string) => void, setDate: any, data: any, loadData: (targetTimeline: { start: string, end: string }) => void, currMonth: Month, setCurrMonth: any }) {
+export function CalendarSelector({ openEvent, setDate, data, loadData, currMonth, setCurrMonth }: { openEvent: (eventId: string) => void, setDate: any, data: any, loadData: (targetTimeline: { start: string, end: string }) => void, currMonth: Month, setCurrMonth: any }) {
     const incrementDate = (months: number, years: number) => {
         const newMonth = (currMonth.month + months + 12) % 12;
         const newYear = (currMonth.year + years + Math.floor((currMonth.month + months) / 12));

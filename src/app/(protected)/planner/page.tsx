@@ -13,7 +13,7 @@ export default function Page() {
     const [date, setDate] = useState(undefined);
     const [creating, setCreating] = useState(false);
     const [loading, setLoading] = useState(true);
-    const [data, setData] = useState<{ events: { id: string, start: string, end: string, content: string }[], start: string, end: string }>({ events: [], start: "", end: "" });
+    const [data, setData] = useState<{ events: { id: string, start: string, end: string, content: string, color: string }[], start: string, end: string }>({ events: [], start: "", end: "" });
     const [openEvent, setOpenEvent] = useState("");
     const [showSettings, setShowSettings] = useState(false);
     const [currMonth, setCurrMonth] = useState<Month>({ month: (new Date(Date.now()).getMonth() as Months), year: (new Date(Date.now()).getFullYear()) })
@@ -94,7 +94,7 @@ export default function Page() {
             </button>
         </div>
         <div className="h-full py-3 flex-1 flex align-middle justify-center">
-            <CalendarSelector data={data} openEvent={setOpenEvent} loadData={loadData} date={date} setDate={setDate} currMonth={currMonth} setCurrMonth={setCurrMonth} />
+            <CalendarSelector data={data} openEvent={setOpenEvent} loadData={loadData} setDate={setDate} currMonth={currMonth} setCurrMonth={setCurrMonth} />
         </div>
     </div>
     {date !== undefined ? <DayPopup date={date} data={getEventsOnDay(date)} onClose={() => { setDate(undefined); }} openSettings={setOpenEvent} /> : ""}

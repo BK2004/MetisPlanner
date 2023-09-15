@@ -2,7 +2,7 @@
 
 import { Day, EventBlock, Months, getTimesForDay } from './';
 
-export function DayPopup({ date, data, onClose, openSettings }: { date: Day, data: { id: string, start: string, end: string, content: string}[], onClose: () => void, openSettings: (eventId: string) => void }) {
+export function DayPopup({ date, data, onClose, openSettings }: { date: Day, data: { id: string, start: string, end: string, content: string, color: string }[], onClose: () => void, openSettings: (eventId: string) => void }) {
     return (
         <div className="wrapper absolute z-20 w-full h-full flex justify-center align-middle">
             <div className="relative justify-start flex flex-col align-middle text-center w-[90%] max-w-[400px] h-4/5 min-h-[600px] bg-gray-100 dark:bg-neutral-850 p-2 px-5 mx-auto my-auto z-30">
