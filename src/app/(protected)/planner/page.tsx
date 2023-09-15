@@ -100,8 +100,8 @@ export default function Page() {
     {date !== undefined ? <DayPopup date={date} data={getEventsOnDay(date)} onClose={() => { setDate(undefined); }} openSettings={setOpenEvent} /> : ""}
     {openEvent !== "" && getEvent(openEvent) !== undefined ? <EventSettings update={updateEvent} data={getEvent(openEvent)} close={() => {setOpenEvent("")}} /> : ""}
     {creating || loading ? <>
-        <div className="fixed top-0 left-0 w-full h-full bg-black opacity-30 z-[90]"></div>
-        <div className="fixed top-0 left-0 w-full h-full bg-transparent z-[100]">
+        <div className="fixed top-0 left-0 w-full h-full bg-black opacity-30 z-[150]"></div>
+        <div className="fixed top-0 left-0 w-full h-full bg-transparent z-[160]">
             <Loading />
         </div>
     </> : ""}
