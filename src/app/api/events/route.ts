@@ -20,7 +20,7 @@ export async function POST(req: NextRequest) {
         
         const [startTime, endTime] = events.extractTimesPOST(data);
 
-        const res = await events.createEvent(startTime, endTime, data.label);
+        const res = await events.createEvent(startTime, endTime, data.label, data.color);
 
         return NextResponse.json({ success: true });
     } catch (e) {

@@ -51,8 +51,8 @@ async function getEvents(startTime: Date, endTime: Date) {
     return events;
 }
 
-async function createEvent(startTime: Date, endTime: Date, label: string) {
-    if (!startTime || !endTime || !label) throw 'Invalid args.';
+async function createEvent(startTime: Date, endTime: Date, label: string, color: string) {
+    if (!startTime || !endTime || !label || !color) throw 'Invalid args.';
 
     const user = await getUser();
     if (!user) throw 'User not logged in';
@@ -62,7 +62,7 @@ async function createEvent(startTime: Date, endTime: Date, label: string) {
         data: {
             events: {
                 create: [
-                    { content: label, start: startTime, end: endTime }
+                    { content: label, start: startTime, end: endTime, color: color }
                 ]
             }
         }

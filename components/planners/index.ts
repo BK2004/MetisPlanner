@@ -5,3 +5,4 @@ export * from './DaySelector';
 export * from './helpers';
 export * from './EventBlock';
 export * from './EventSettings';
+export * from './ColorPicker';

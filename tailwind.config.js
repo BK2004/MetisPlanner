@@ -1,3 +1,4 @@
+// List of colors that need to be preloaded for planner with custom colors
 const colors = [
   "blue",
   "orange",

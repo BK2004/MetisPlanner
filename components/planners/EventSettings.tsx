@@ -1,7 +1,7 @@
 'use client'
 
 import { useMemo, useState } from "react";
-import { getTimeString, getTimesForDay, convertIsoToDay, convertIsoToMsTime, convertMsToIsoTime, Day, convertToEpochSeconds } from ".";
+import { getTimeString, getTimesForDay, convertIsoToDay, convertIsoToMsTime, convertMsToIsoTime, Day, convertToEpochSeconds, ColorPicker } from ".";
 import { DaySelector } from ".";
 import { Colors } from ".";
 
@@ -52,14 +52,7 @@ export function EventSettings({ data, close, update }: { data: any, close: () =>
                             </select>
                         </div>
                         <p className="w-full mt-3 text-center text-lg text-neutral-500 dark:text-neutral-400">Color</p>
-                        <div className="color-display overflow-hidden w-full text-lg flex flex-wrap justify-start gap-[5px]">
-                            {/* LOAD ALL ALLOWED COLORS */}
-                            {Object.keys(Colors).filter((val) => !isNaN(Number(val))).map((color) => {
-                                return <button onClick={() => { setChanges({ content: changes.content, start: changes.start, end: changes.end, color: Colors[Number(color)] })}} key={color} className={`w-[46px] text-white text-3xl font-bold aspect-square rounded-md border-2 transition-all duration-100 ease-in-out border-white dark:border-neutral-850 bg-${Colors[Number(color)]}-500 hover:border-0`}>
-                                    {changes.color === Colors[Number(color)] ? "✓" : ""}
-                                </button>;
-                            })}
-                        </div>
+                        <ColorPicker selected={changes.color} setColor={(color: string) => setChanges({ content: changes.content, start: changes.start, end: changes.end, color: color })} />
                     </div>  
                 </div>
             </div>

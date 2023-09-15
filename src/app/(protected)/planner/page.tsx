@@ -23,7 +23,7 @@ export default function Page() {
         
         setCreating(true);
 
-        requestWrapper.post('/api/events', { label: request.label, 'start-time': convertMsToIsoTime(Number(request.start)), 'end-time': convertMsToIsoTime(Number(request.end)) }).then((res) => {
+        requestWrapper.post('/api/events', { label: request.label, 'start-time': convertMsToIsoTime(Number(request.start)), 'end-time': convertMsToIsoTime(Number(request.end)), 'color': request.color }).then((res) => {
             setCreating(false);
 
             loadData({ start: data.start, end: data.end });

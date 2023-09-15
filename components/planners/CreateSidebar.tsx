@@ -1,4 +1,4 @@
-import { DaySelector, Day, getTimesForDay } from ".";
+import { DaySelector, Day, getTimesForDay, ColorPicker } from ".";
 import { useState, useRef } from "react";
 import { convertToEpochSeconds } from ".";
 
@@ -9,9 +9,10 @@ const useFocus = () => {
     return [ htmlElRef, setFocus ] 
 }
 
-export function CreateSidebar({ onSubmit }: { onSubmit: (data: { label: string, start: string, end: string }) => void }) {
+export function CreateSidebar({ onSubmit }: { onSubmit: (data: { label: string, start: string, end: string, color: string }) => void }) {
     const [selectedDate, setSelectedDate] = useState<Day>({date: new Date(Date.now()).getDate(), weekday: new Date(Date.now()).getDay(), month: new Date(Date.now()).getMonth(), year: new Date(Date.now()).getFullYear()});
     const [fields, setFields] = useState<{ label: string, start: string, end: string }>({ label: "", start: "", end: "" });
+    const [selectedColor, setSelectedColor] = useState("blue");
     const [labelRef, setLabelFocus] = useFocus();
     const [startRef, setStartFocus] = useFocus();
     const [endRef, setEndFocus] = useFocus();
@@ -36,9 +37,10 @@ export function CreateSidebar({ onSubmit }: { onSubmit: (data: { label: string, 
             return;
         }
 
-        onSubmit(fields);
+        onSubmit({...fields, color: selectedColor});
 
-        setFields({ label: "", start: "", end: ""});
+        setFields({ label: "", start: "", end: "" });
+        setSelectedColor("blue");
     }
 
     const selectDate = (val: Day) => {
@@ -55,7 +57,7 @@ export function CreateSidebar({ onSubmit }: { onSubmit: (data: { label: string, 
         <div className="w-4/5 mx-auto">
             <DaySelector selected={selectedDate} selectDate={selectDate} />
         </div>
-        <form className="flex flex-1 flex-col align-middle justify-start" onSubmit={validateForm}>
+        <div className="flex flex-1 flex-col align-middle justify-start">
             <div className="input-group mb-4 w-4/5 mx-auto">
                 <label htmlFor="label">Event Name</label>
                 <input value={fields.label} ref={labelRef} onChange={(e) => { setFields({ label: e.target.value, start: fields.start, end: fields.end }) }} required name="label" id="label" className="outline-0 dark:bg-neutral-750 bg-gray-100 ring-gray-400 dark:ring-neutral-900 ring-1 focus:ring-2 focus:ring-blue-600 dark:focus:ring-blue-500 ring-inset border-0 rounded-md px-3 py-2 w-full transition-all duration-100 ease-linear" type="text"></input>
@@ -84,11 +86,14 @@ export function CreateSidebar({ onSubmit }: { onSubmit: (data: { label: string, 
                     </select>
                 </div>
             </div>
+            <div className="color-picker w-4/5 mx-auto mb-4">
+                <ColorPicker selected={selectedColor} setColor={setSelectedColor} />
+            </div>
             <input className="bot-wrap w-4/5 mx-auto text-2xl rounded-xl p-3 px-5 text-white bg-blue-600 hover:cursor-pointer hover:opacity-90 transition-all duration-150" type="submit" value="CREATE" onClick={(e) => {
                 e.preventDefault();
 
                 validateForm();
             }} />
-        </form>
+        </div>
     </div>)
 }
