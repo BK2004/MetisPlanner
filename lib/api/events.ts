@@ -42,6 +42,7 @@ async function getEvents(startTime: Date, endTime: Date) {
         start: true,
         end: true,
         content: true,
+        color: true,
         user: false,
         userId: false,
         id: true
@@ -70,8 +71,8 @@ async function createEvent(startTime: Date, endTime: Date, label: string) {
     return createRes;
 }
 
-async function updateEvent(eventId: string, startTime: Date, endTime: Date, content: string) {
-    if (!startTime || !endTime || !content) throw 'Invalid args.';
+async function updateEvent(eventId: string, startTime: Date, endTime: Date, content: string, color: string) {
+    if (!startTime || !endTime || !content || !color) throw 'Invalid args.';
 
     const user = await getUser();
     if (!user) throw 'User not logged in';
@@ -83,7 +84,8 @@ async function updateEvent(eventId: string, startTime: Date, endTime: Date, cont
     data: {
         content: content,
         start: startTime,
-        end: endTime
+        end: endTime,
+        color: color,
     }})
 
     return updateRes;

@@ -55,7 +55,7 @@ export function CalendarSelector({  date, openEvent, setDate, data, loadData, cu
                                 </div>
                                 <div className={`col-start-1 row-start-1 p-2 w-full h-full pointer-events-none flex flex-col justify-end`}>
                                     {getEventsOnDay(day).filter((val, i) => i < 3).map((value) => {
-                                        return (<button onClick={() => openEvent(value.id)} className="pointer-events-auto hover:bg-gray-200 hover:dark:bg-neutral-750 hover:border-blue-400 transition-all duration-300 ease-in-out text-ellipsis mb-1 px-1 last:mb-0 w-full overflow-x-hidden whitespace-nowrap border-blue-500 border-l-4 rounded-l-none rounded-md bg-white dark:bg-neutral-850" key={value.id}>{value.content}</button>);
+                                        return (<button onClick={() => openEvent(value.id)} className={`pointer-events-auto hover:bg-gray-200 hover:dark:bg-neutral-750 hover:border-${value.color}-400 transition-all duration-300 ease-in-out text-ellipsis mb-1 px-1 last:mb-0 w-full overflow-x-hidden whitespace-nowrap border-${value.color}-500 border-l-4 rounded-l-none rounded-md bg-white dark:bg-neutral-850`} key={value.id}>{value.content}</button>);
                                     })}
                                 </div>
                             </div>);

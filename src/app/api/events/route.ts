@@ -32,7 +32,7 @@ export async function PATCH(req: NextRequest) {
     try {
         const data = await req.json();
 
-        const res = await events.updateEvent(data.id, new Date(data.start), new Date(data.end), data.content);
+        const res = await events.updateEvent(data.id, new Date(data.start), new Date(data.end), data.content, data.color);
 
         return NextResponse.json({ success: true });
     } catch (e) {

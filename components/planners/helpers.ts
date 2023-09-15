@@ -44,7 +44,6 @@ export const convertMsToIsoTime = (ms: number) => {
 }
 
 export const convertIsoToMsTime = (iso: string) => {
-    console.log(iso);
     return new Date(iso).getTime();
 }
 
@@ -74,7 +73,7 @@ export const getTimesForDay = (day: number, month: number, year: number) => {
 
     while (t <= endTime) {
         const dateAtTime = new Date(t);
-        res.push({ value: t, label: `${dateAtTime.getHours() % 12 != 0 ? dateAtTime.getHours() % 12 : 12}:${dateAtTime.getMinutes() < 10 ? "0" : ""}${dateAtTime.getMinutes()} ${dateAtTime.getHours() >= 12 ? "PM" : "AM"}` });
+        res.push({ value: t, label: getTimeString(dateAtTime.toISOString()) });
 
         t += TIME_INTERVAL * 60 * 1000;
     }

@@ -34,3 +34,16 @@ export type Day = {
     date: number,
     weekday: Days,
 } & Month
+
+export enum Colors {
+    blue,
+    orange,
+    purple,
+    pink,
+    yellow,
+    violet,
+    cyan,
+    lime,
+    rose,
+    zinc
+}

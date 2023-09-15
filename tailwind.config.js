@@ -1,3 +1,16 @@
+const colors = [
+  "blue",
+  "orange",
+  "purple",
+  "pink",
+  "yellow",
+  "violet",
+  "cyan",
+  "lime",
+  "rose",
+  "zinc"
+]
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: "class",
@@ -19,6 +32,30 @@ module.exports = {
     'h-1/5',
     'h-1/6',
     'h-1/7',
+    {
+      pattern: new RegExp(`bg-(${Object.values(colors).join("|")})-500`)
+    },
+    {
+      pattern: new RegExp(`bg-(${Object.values(colors).join("|")})-400`)
+    },
+    {
+      pattern: new RegExp(`text-(${Object.values(colors).join("|")})-500`)
+    },
+    {
+      pattern: new RegExp(`text-(${Object.values(colors).join("|")})-400`)
+    },
+    {
+      pattern: new RegExp(`border-(${Object.values(colors).join("|")})-500`)
+    },
+    {
+      pattern: new RegExp(`border-(${Object.values(colors).join("|")})-400`)
+    },
+    {
+      pattern: new RegExp(`border-(l|r|t|b)-(${Object.values(colors).join("|")})-500`)
+    },
+    {
+      pattern: new RegExp(`border-(l|r|t|b)-(${Object.values(colors).join("|")})-400`)
+    }
   ],
   content: [
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",

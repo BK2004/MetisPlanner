@@ -72,10 +72,10 @@ export default function Page() {
         return undefined;
     }
 
-    const updateEvent = (changes: { id: string, start: string, end: string, content: string }) => {
+    const updateEvent = (changes: { id: string, start: string, end: string, content: string, color: string }) => {
         setLoading(true);
 
-        requestWrapper.patch("/api/events", { id: changes.id, start: changes.start, end: changes.end, content: changes.content }).then((res) => {
+        requestWrapper.patch("/api/events", changes).then((res) => {
             if (res.status !== 200) {
                 setLoading(false);
                 
