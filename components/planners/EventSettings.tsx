@@ -26,8 +26,8 @@ export function EventSettings({ data, close, update }: { data: any, close: () =>
     }
     
     return (<>
-        <div className="settings-wrapper absolute flex justify-center align-middle w-full h-full z-30 overflow-hidden">
-            <div className="relative mx-auto my-auto settings-frame p-5 bg-white dark:bg-neutral-850 w-[90%] max-w-[750px] h-1/2 min-h-[400px] z-10">
+        <div className="settings-wrapper fixed flex justify-center align-middle w-full h-full z-30 overflow-hidden">
+            <div className="relative mx-auto my-auto settings-frame p-5 pb-10 bg-white dark:bg-neutral-850 w-[90%] max-w-[750px] h-[90%] max-h-[400px] z-10 overflow-y-auto scroll-none">
                 <h1 className="text-2xl mb-3">Event Settings</h1>
                 {/* Input elements for making changes to the event */}
                 <textarea value={changes.content} onKeyDown={(e) => {if (e.key === "Enter") e.preventDefault() }} onChange={(e) => { setChanges({ content: e.target.value, start: changes.start, end: changes.end, color: changes.color }) }} className="outline-0 mb-2 bg-inherit h-11 overflow-y-auto scroll-none border-b-2 border-gray-100 dark:border-neutral-750  focus:bg-gray-100 focus:dark:bg-neutral-800 focus:border-b-4 focus:border-blue-500 focus:dark:border-blue-600 ring-blue-500 dark:ring-blue-600 focus:shadow-md text-lg border-0 px-3 py-2 w-full transition-all duration-75 ease-in-out resize-none"></textarea>
@@ -64,7 +64,7 @@ export function EventSettings({ data, close, update }: { data: any, close: () =>
                 </div>
             </div>
             <div onClick={close} className="opacity-60 bg-black w-full h-full fixed top-0"></div>
-            <div className={`${changesMade() ? "bottom-4" : "bottom-0 translate-y-full"} flex justify-between align-middle transition-all duration-500 ease-in-out submit-popup fixed w-[80%] max-w-[670px] rounded-lg h-16 p-2 px-4 bg-white dark:bg-neutral-850 shadow-md`}>
+            <div className={`${changesMade() ? "bottom-4" : "bottom-0 translate-y-full"} flex justify-between align-middle transition-all duration-500 ease-in-out submit-popup fixed w-[80%] max-w-[670px] rounded-lg h-16 p-2 px-4 bg-white dark:bg-neutral-850 shadow-md z-[100]`}>
                 <p className="w-fit self-center text-lg font-bold">Changes Detected!</p>
                 <div className="buttons h-full flex align-middle"> 
                     <button onClick={() => {

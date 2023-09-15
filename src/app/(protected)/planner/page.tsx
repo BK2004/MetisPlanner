@@ -86,13 +86,13 @@ export default function Page() {
         })
     }
 
-    return (<><div className="w-full flex flex-1 flex-row justify-between scroll-none">
+    return (<><div className="relative w-full flex flex-1 flex-row justify-between scroll-none">
         <div className={`absolute ${showSettings ? "" : "-translate-x-full lg:translate-x-0"} lg:relative left-bar w-[350px] h-full border-t-4 border-t-gray-200 dark:border-t-neutral-800 shadow-lg z-20 transition-all duration-300 ease-in-out`}>
             <CreateSidebar onSubmit={createEvent} />
-            <button onClick={() => setShowSettings(!showSettings)} className="lg:hidden toggle-arrow absolute top-1/2 -translate-y-1/2 right-0 translate-x-1/2 text-white bg-blue-500 dark:bg-blue-600 w-10 h-10 rounded-full a">
+        </div>
+        <button onClick={() => setShowSettings(!showSettings)} className={`lg:hidden ${!showSettings ? "left-0" : "left-[350px]"} z-30 transition-all duration-300 ease-in-out toggle-arrow fixed top-1/2 -translate-y-1/2  -translate-x-1/2 text-white bg-blue-500 dark:bg-blue-600 w-10 h-10 rounded-full`}>
                 {showSettings ? "<" : ">"}
             </button>
-        </div>
         <div className="h-full py-3 flex-1 flex align-middle justify-center">
             <CalendarSelector data={data} openEvent={setOpenEvent} loadData={loadData} setDate={setDate} currMonth={currMonth} setCurrMonth={setCurrMonth} />
         </div>
