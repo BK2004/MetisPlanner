@@ -1,6 +1,6 @@
 'use client'
 
-import { CalendarSelector, Day, Days, EventSettings, Months, convertIsoToMsTime, convertToIsoTime, daysAreEqual } from "../../../../components/planners";
+import { CalendarSelector, Day, Days, EventSettings, Month, Months, convertIsoToMsTime, convertToEpochSeconds, convertToIsoTime, daysAreEqual, getTimeString } from "../../../../components/planners";
 import { useState } from 'react';
 import { DayPopup } from "../../../../components/planners/DayPopup";
 import { CreateSidebar } from "../../../../components/planners";
@@ -16,6 +16,7 @@ export default function Page() {
     const [data, setData] = useState<{ events: { id: string, start: string, end: string, content: string }[], start: string, end: string }>({ events: [], start: "", end: "" });
     const [openEvent, setOpenEvent] = useState("");
     const [showSettings, setShowSettings] = useState(false);
+    const [currMonth, setCurrMonth] = useState<Month>({ month: (new Date(Date.now()).getMonth() as Months), year: (new Date(Date.now()).getFullYear()) })
 
     const createEvent = (request: FieldValues) => {
         if (creating) return;
@@ -51,8 +52,9 @@ export default function Page() {
 
         for (let event of data.events) {
             const eventDate = new Date(event.start);
+            const latestTime = convertToEpochSeconds(day.date, day.month, day.year) * 1000 + 60*60*24*1000;
 
-            if (daysAreEqual(day, { date: eventDate.getDate(), month: eventDate.getMonth(), weekday: eventDate.getDay(), year: eventDate.getFullYear() })) {
+            if (eventDate.getTime() <= latestTime && eventDate.getTime() >= convertToEpochSeconds(day.date, day.month, day.year, 3600) * 1000) {
                 dayEvents.push(event);
             }
         }
@@ -70,6 +72,20 @@ export default function Page() {
         return undefined;
     }
 
+    const updateEvent = (changes: { id: string, start: string, end: string, content: string }) => {
+        setLoading(true);
+
+        requestWrapper.patch("/api/events", { id: changes.id, start: changes.start, end: changes.end, content: changes.content }).then((res) => {
+            if (res.status !== 200) {
+                setLoading(false);
+                
+                return; 
+            }
+
+            loadData({ start: convertToIsoTime(1, currMonth.month, currMonth.year, 3600), end: convertToIsoTime(1, currMonth.month + 1, currMonth.year) })
+        })
+    }
+
     return (<><div className="w-full flex flex-1 flex-row justify-between scroll-none">
         <div className={`absolute ${showSettings ? "" : "-translate-x-full lg:translate-x-0"} lg:relative left-bar w-[350px] h-full border-t-4 border-t-gray-200 dark:border-t-neutral-800 shadow-lg z-20 transition-all duration-300 ease-in-out`}>
             <CreateSidebar onSubmit={createEvent} />
@@ -78,14 +94,14 @@ export default function Page() {
             </button>
         </div>
         <div className="h-full py-3 flex-1 flex align-middle justify-center">
-            <CalendarSelector data={data} openEvent={setOpenEvent} loadData={loadData} date={date} setDate={setDate} />
+            <CalendarSelector data={data} openEvent={setOpenEvent} loadData={loadData} date={date} setDate={setDate} currMonth={currMonth} setCurrMonth={setCurrMonth} />
         </div>
     </div>
     {date !== undefined ? <DayPopup date={date} data={getEventsOnDay(date)} onClose={() => { setDate(undefined); }} openSettings={setOpenEvent} /> : ""}
-    {openEvent !== "" && getEvent(openEvent) !== undefined ? <EventSettings data={getEvent(openEvent)} close={() => {setOpenEvent("")}} /> : ""}
+    {openEvent !== "" && getEvent(openEvent) !== undefined ? <EventSettings update={updateEvent} data={getEvent(openEvent)} close={() => {setOpenEvent("")}} /> : ""}
     {creating || loading ? <>
-        <div className="fixed top-0 left-0 w-full h-full bg-black opacity-30 z-50"></div>
-        <div className="fixed top-0 left-0 w-full h-full bg-transparent z-60">
+        <div className="fixed top-0 left-0 w-full h-full bg-black opacity-30 z-[90]"></div>
+        <div className="fixed top-0 left-0 w-full h-full bg-transparent z-[100]">
             <Loading />
         </div>
     </> : ""}

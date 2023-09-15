@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import { getTimeString, getTimesForDay, convertIsoToDay, convertIsoToMsTime, convertMsToIsoTime, Day, convertToEpochSeconds } from ".";
 import { DaySelector } from ".";
 
-export function EventSettings({ data, close }: { data: any, close: () => void }) {
+export function EventSettings({ data, close, update }: { data: any, close: () => void, update: (changes: { id: string, start: string, end: string, content: string }) => void }) {
     const [changes, setChanges] = useState({ content: data.content, start: data.start, end: data.end});
     const [day, setDay] = useState(convertIsoToDay(data.start));
 
@@ -19,8 +19,6 @@ export function EventSettings({ data, close }: { data: any, close: () => void })
         const oldDay = convertIsoToDay(changes.start);
         const newStart = convertToEpochSeconds(date.date, date.month, date.year, (Math.floor(convertIsoToMsTime(changes.start)/1000) - convertToEpochSeconds(oldDay.date, oldDay.month, oldDay.year))) * 1000;
         const newEnd = convertToEpochSeconds(date.date, date.month, date.year, (Math.floor(convertIsoToMsTime(changes.end)/1000) - convertToEpochSeconds(oldDay.date, oldDay.month, oldDay.year))) * 1000;
-
-        console.log("new start: " + newStart);
 
         setChanges({ content: changes.content, start: convertMsToIsoTime(newStart), end: convertMsToIsoTime(newEnd)});
         setDay(date);
@@ -41,13 +39,13 @@ export function EventSettings({ data, close }: { data: any, close: () => void })
                         <p className="w-full text-center text-lg text-neutral-600 dark:text-neutral-400">Time</p>
                         <div className="time-wrap w-fit">
                             <select onChange={(e) => setChanges({ content: changes.content, start: convertMsToIsoTime(Number(e.target.value)), end: changes.end })} value={startTime} className="text-lg hover:cursor-pointer transition-all duration-150 ease-in-out appearance-none outline-0 ring-0 bg-white dark:bg-neutral-850 scroll-none w-fit pr-2 pl-1 rounded-md focus:shadow-md focus:bg-gray-100 border-b-2 border-gray-100 dark:border-neutral-750 focus:border-b-0 focus:dark:bg-neutral-700 focus:ring-1 focus:ring-blue-500 focus:dark:ring-blue-600">
-                                {getTimesForDay(new Date(changes.start).getDate(), new Date(changes.start).getMonth(), new Date(changes.start).getFullYear()).map((val) => {
+                                {getTimesForDay(day.date, day.month, day.year).map((val) => {
                                     return (<option className="bg-gray-100 dark:bg-neutral-700" key={`start-option-${val.value}`} value={val.value}>{val.label}</option>);
                                 })}
                             </select>
                             <span className="mx-1">&mdash;</span>
                             <select onChange={(e) => setChanges({ content: changes.content, start: changes.start, end: convertMsToIsoTime(Number(e.target.value)) })} value={endTime} className="text-lg hover:cursor-pointer px-4 pr-2 transition-all duration-150 ease-in-out appearance-none outline-0 ring-0 bg-white dark:bg-neutral-850 scroll-none w-fit rounded-md focus:shadow-md focus:bg-gray-100 border-b-2 border-gray-100 dark:border-neutral-750 focus:border-b-0 focus:dark:bg-neutral-700 focus:ring-1 focus:ring-blue-500 focus:dark:ring-blue-600">
-                                {getTimesForDay(new Date(changes.start).getDate(), new Date(changes.start).getMonth(), new Date(changes.start).getFullYear()).map((val) => {
+                                {getTimesForDay(day.date, day.month, day.year).map((val) => {
                                     return <option className="bg-gray-100 dark:bg-neutral-700" key={`start-option-${val.value}`} value={val.value}>{val.label}</option>;
                                 })}
                             </select>
@@ -59,7 +57,12 @@ export function EventSettings({ data, close }: { data: any, close: () => void })
             <div className={`${changesMade() ? "bottom-4" : "bottom-0 translate-y-full"} flex justify-between align-middle transition-all duration-500 ease-in-out submit-popup fixed w-[80%] max-w-[670px] rounded-lg h-16 p-2 px-4 bg-white dark:bg-neutral-850 shadow-md`}>
                 <p className="w-fit self-center text-lg font-bold">Changes Detected!</p>
                 <div className="buttons h-full flex align-middle"> 
-                    <button className="save-changes transition-colors duration-300 ease-in-out shadow-md text-white hover:bg-blue-400 hover:dark:bg-blue-500 bg-blue-500 dark:bg-blue-600 rounded-lg px-4 text-xl font-bold mr-4">SAVE</button>
+                    <button onClick={() => {
+                        
+
+                        update({ id: data.id, start: changes.start, content: changes.content, end: changes.end });
+                        close();
+                    }} className="save-changes transition-colors duration-300 ease-in-out shadow-md text-white hover:bg-blue-400 hover:dark:bg-blue-500 bg-blue-500 dark:bg-blue-600 rounded-lg px-4 text-xl font-bold mr-4">SAVE</button>
                     <button onClick={close} className="discard-changes transition-colors duration-300 ease-in-out shadow-md text-white hover:bg-blue-400 hover:dark:bg-blue-500 bg-blue-500 dark:bg-blue-600 rounded-lg px-8 text-xl font-bold">DISCARD</button>
                 </div>
             </div>

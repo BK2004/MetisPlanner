@@ -44,6 +44,7 @@ export const convertMsToIsoTime = (ms: number) => {
 }
 
 export const convertIsoToMsTime = (iso: string) => {
+    console.log(iso);
     return new Date(iso).getTime();
 }
 
@@ -53,6 +54,9 @@ export const getTimeString = (iso: string) => {
     let hours = d.getHours();
     let amOrPm = "AM";
 
+    if (hours === 0) {
+        return "12:00 AM";
+    }
     if (hours >= 12) {
         amOrPm = "PM";
     }
@@ -79,7 +83,10 @@ export const getTimesForDay = (day: number, month: number, year: number) => {
 }
 
 export const convertIsoToDay = (iso: string) => {
-    const d = new Date(iso);
+    let d = new Date(iso);
+
+    // If time is 12:00 AM, the day should be 1 day less
+    if (d.getHours() === 0) d = new Date(d.getTime() - 1000);
 
     return { date: d.getDate(), weekday: d.getDay(), month: d.getMonth(), year: d.getFullYear() }
 }

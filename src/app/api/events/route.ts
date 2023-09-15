@@ -15,12 +15,24 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
-    const data = await req.json();
-
     try {
+        const data = await req.json();
+        
         const [startTime, endTime] = events.extractTimesPOST(data);
 
         const res = await events.createEvent(startTime, endTime, data.label);
+
+        return NextResponse.json({ success: true });
+    } catch (e) {
+        return NextResponse.json({ message: e, success: false });
+    }
+}
+
+export async function PATCH(req: NextRequest) {
+    try {
+        const data = await req.json();
+
+        const res = await events.updateEvent(data.id, new Date(data.start), new Date(data.end), data.content);
 
         return NextResponse.json({ success: true });
     } catch (e) {

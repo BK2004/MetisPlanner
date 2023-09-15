@@ -4,6 +4,7 @@ import { prisma } from "..";
 export const events = {
     getEvents: getEvents,
     createEvent: createEvent,
+    updateEvent: updateEvent,
     extractTimesGET: extractTimesGET,
     extractTimesPOST: extractTimesPOST,
 }
@@ -67,4 +68,23 @@ async function createEvent(startTime: Date, endTime: Date, label: string) {
     });
 
     return createRes;
+}
+
+async function updateEvent(eventId: string, startTime: Date, endTime: Date, content: string) {
+    if (!startTime || !endTime || !content) throw 'Invalid args.';
+
+    const user = await getUser();
+    if (!user) throw 'User not logged in';
+
+    const updateRes = await prisma.event.update({ where: {
+        id: eventId,
+        userId: user.id as string
+    },
+    data: {
+        content: content,
+        start: startTime,
+        end: endTime
+    }})
+
+    return updateRes;
 }
