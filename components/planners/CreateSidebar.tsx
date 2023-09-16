@@ -44,8 +44,8 @@ export function CreateSidebar({ onSubmit }: { onSubmit: (data: { label: string, 
     }
 
     const selectDate = (val: Day) => {
-        const newStart = convertToEpochSeconds(val.date, val.month, val.year, Math.floor(Number(fields.start)/1000) - convertToEpochSeconds(selectedDate.date, selectedDate.month, selectedDate.year)) * 1000;
-        const newEnd = convertToEpochSeconds(val.date, val.month, val.year, Math.floor(Number(fields.end)/1000) - convertToEpochSeconds(selectedDate.date, selectedDate.month, selectedDate.year)) * 1000;
+        const newStart = fields.start === "" ? "" : convertToEpochSeconds(val.date, val.month, val.year, Math.floor(Number(fields.start)/1000) - convertToEpochSeconds(selectedDate.date, selectedDate.month, selectedDate.year)) * 1000;
+        const newEnd = fields.end === "" ? "" : convertToEpochSeconds(val.date, val.month, val.year, Math.floor(Number(fields.end)/1000) - convertToEpochSeconds(selectedDate.date, selectedDate.month, selectedDate.year)) * 1000;
 
         setSelectedDate(val);
         setFields({ label: fields.label, start: String(newStart), end: String(newEnd) });
