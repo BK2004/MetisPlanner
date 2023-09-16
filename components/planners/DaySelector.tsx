@@ -28,7 +28,6 @@ export function DaySelector({ selected, selectDate }: { selected: Day, selectDat
         </div>
         <div className={`py-3 day-choices w-full grid grid-cols-7 grid-rows-${Math.ceil(getDaysInMonth(month.month, month.year).length / 7)}`}>
             {getDaysInMonth(month.month, month.year).map((day: Day | undefined, i: number) => {
-                if (daysAreEqual(day, selected)) console.log(day, "====", selected);
                 if (day !== undefined) {
                     return (<div key={"day-" + day.date + "-" + day.month + "-" + day.year} className={`transition-all duration-300 ease-in-out col-start-${i % 7 + 1} row-start-${Math.floor(i / 7) + 1}`}>
                         <button onClick={() => { selectDate(day); }} className={`transition-all duration-300 ease-in-out w-8 h-8 text-center rounded-3xl ${daysAreEqual(selected, day) ? "bg-blue-500 hover:bg-blue-400 text-white" : "hover:bg-opacity-30 hover:bg-blue-500"}`}>

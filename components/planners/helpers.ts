@@ -4,6 +4,9 @@ const TIME_INTERVAL = 15; // allow for 15 minute time intervals
 
 export const daysAreEqual = (day1: Day|undefined, day2: Day|undefined) => {
     if (day1 === undefined || day2 === undefined) return undefined;
+
+    if (day1.date === day2.date && day1.month === day2.month && day1.year === day2.year) console.log(day1, '===', day2);
+
     return day1.date === day2.date && day1.month === day2.month && day1.year === day2.year;
 }
 
