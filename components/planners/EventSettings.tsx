@@ -60,7 +60,7 @@ export function EventSettings({ data, close, update, deleteEvent }: { data: any,
                         update({...changes, id: data.id});
                         close();
                     }} className={`save-changes min-w-fit ${!changesMade() ? "opacity-30 pointer-events-none" : ""} flex-1 py-2 transition-all duration-300 ease-in-out shadow-md text-white hover:bg-blue-400 hover:dark:bg-blue-500 bg-blue-500 dark:bg-blue-600 rounded-lg px-4 text-xl font-bold`}>SAVE</button>
-                    <button onClick={close} className="discard-changes min-w-fit flex-1 transition-all py-2 duration-300 ease-in-out shadow-md text-white hover:bg-blue-400 hover:dark:bg-blue-500 bg-blue-500 dark:bg-blue-600 rounded-lg px-8 text-xl font-bold">DISCARD</button>
+                    <button onClick={close} className="discard-changes min-w-fit flex-1 transition-all py-2 duration-300 ease-in-out shadow-md text-white hover:bg-blue-400 hover:dark:bg-blue-500 bg-blue-500 dark:bg-blue-600 rounded-lg px-8 text-xl font-bold">DISCARD CHANGES</button>
                     <button onClick={() => {
                         deleteEvent(data.id);
 
