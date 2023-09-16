@@ -56,10 +56,10 @@ export function CreateSidebar({ onSubmit }: { onSubmit: (data: { label: string, 
     return (<div className="flex flex-col justify-start align-middle h-full w-full bg-white dark:bg-neutral-850 border-r-2 border-r-blue-500 dark:border-r-blue-600">
         <h1 className="text-center pt-4 text-3xl">Create event</h1>
         <hr className="border-0 h-1 my-2 bg-gray-200 dark:bg-neutral-750 w-5/6 mx-auto rounded-lg" />
-        <div className="w-4/5 mx-auto">
-            <DaySelector selected={selectedDate} selectDate={selectDate} />
-        </div>
         <div className="flex flex-1 flex-col align-middle justify-start">
+            <div className="w-4/5 mx-auto mb-2">
+                <DaySelector selected={selectedDate} selectDate={selectDate} />
+            </div>
             <div className="input-group mb-4 w-4/5 mx-auto">
                 <label htmlFor="label">Event Name</label>
                 <input value={fields.label} ref={labelRef} onChange={(e) => { setFields({ label: e.target.value, start: fields.start, end: fields.end }) }} required name="label" id="label" className="outline-0 dark:bg-neutral-750 bg-gray-100 ring-gray-400 dark:ring-neutral-900 ring-1 focus:ring-2 focus:ring-blue-600 dark:focus:ring-blue-500 ring-inset border-0 rounded-md px-3 py-2 w-full transition-all duration-100 ease-linear" type="text"></input>
