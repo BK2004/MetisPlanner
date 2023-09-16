@@ -39,3 +39,15 @@ export async function PATCH(req: NextRequest) {
         return NextResponse.json({ message: e, success: false });
     }
 }
+
+export async function DELETE(req: NextRequest) {
+    try {
+        const data = await req.json();
+
+        const res = await events.deleteEvent(data.id);
+
+        return NextResponse.json({ success: true });
+    } catch (e) {
+        return NextResponse.json({ message: e, success: false });
+    }
+}

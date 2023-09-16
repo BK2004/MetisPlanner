@@ -5,6 +5,7 @@ export const events = {
     getEvents: getEvents,
     createEvent: createEvent,
     updateEvent: updateEvent,
+    deleteEvent: deleteEvent,
     extractTimesGET: extractTimesGET,
     extractTimesPOST: extractTimesPOST,
 }
@@ -89,4 +90,18 @@ async function updateEvent(eventId: string, startTime: Date, endTime: Date, cont
     }})
 
     return updateRes;
+}
+
+async function deleteEvent(eventId: string) {
+    if (!eventId) throw 'Invalid args.';
+
+    const user = await getUser();
+    if (!user) throw 'User not logged in';
+
+    const deleteRes = await prisma.event.delete({ where: {
+        id: eventId,
+        userId: user.id as string
+    }});
+
+    return deleteRes
 }

@@ -5,7 +5,7 @@ import { getTimeString, getTimesForDay, convertIsoToDay, convertIsoToMsTime, con
 import { DaySelector } from ".";
 import { Colors } from ".";
 
-export function EventSettings({ data, close, update }: { data: any, close: () => void, update: (changes: { id: string, start: string, end: string, content: string, color: string }) => void }) {
+export function EventSettings({ data, close, update, deleteEvent }: { data: any, close: () => void, update: (changes: { id: string, start: string, end: string, content: string, color: string }) => void, deleteEvent: (id: string) => void }) {
     const [changes, setChanges] = useState({ content: data.content, start: data.start, end: data.end, color: data.color });
     const [day, setDay] = useState(convertIsoToDay(data.start));
 
@@ -55,12 +55,17 @@ export function EventSettings({ data, close, update }: { data: any, close: () =>
                         <ColorPicker selected={changes.color} setColor={(color: string) => setChanges({ content: changes.content, start: changes.start, end: changes.end, color: color })} />
                     </div>
                 </div>
-                <div className="buttons w-full flex align-middle justify-center"> 
+                <div className="buttons w-full gap-4 flex flex-wrap align-middle justify-center"> 
                     <button onClick={() => {
                         update({...changes, id: data.id});
                         close();
-                    }} className={`save-changes ${!changesMade() ? "opacity-30 pointer-events-none" : ""} flex-1 py-2 transition-all duration-300 ease-in-out shadow-md text-white hover:bg-blue-400 hover:dark:bg-blue-500 bg-blue-500 dark:bg-blue-600 rounded-lg px-4 text-xl font-bold mr-4`}>SAVE</button>
-                    <button onClick={close} className="discard-changes flex-1 transition-all py-2 duration-300 ease-in-out shadow-md text-white hover:bg-blue-400 hover:dark:bg-blue-500 bg-blue-500 dark:bg-blue-600 rounded-lg px-8 text-xl font-bold">DISCARD</button>
+                    }} className={`save-changes min-w-fit ${!changesMade() ? "opacity-30 pointer-events-none" : ""} flex-1 py-2 transition-all duration-300 ease-in-out shadow-md text-white hover:bg-blue-400 hover:dark:bg-blue-500 bg-blue-500 dark:bg-blue-600 rounded-lg px-4 text-xl font-bold`}>SAVE</button>
+                    <button onClick={close} className="discard-changes min-w-fit flex-1 transition-all py-2 duration-300 ease-in-out shadow-md text-white hover:bg-blue-400 hover:dark:bg-blue-500 bg-blue-500 dark:bg-blue-600 rounded-lg px-8 text-xl font-bold">DISCARD</button>
+                    <button onClick={() => {
+                        deleteEvent(data.id);
+
+                        close();
+                    }} className="delete-event min-w-fit flex-1 transition-all py-2 duration-300 ease-in-out shadow-md text-white hover:bg-red-400 bg-red-500 rounded-lg px-8 text-xl font-bold">DELETE EVENT</button>
                 </div>
             </div>
             <div onClick={close} className="opacity-60 bg-black w-full h-full fixed top-0"></div>

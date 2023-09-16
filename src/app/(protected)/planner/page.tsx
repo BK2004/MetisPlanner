@@ -12,6 +12,7 @@ import { convertMsToIsoTime } from "../../../../components/planners";
 export default function Page() {
     const [date, setDate] = useState(undefined);
     const [creating, setCreating] = useState(false);
+    const [deleting, setDeleting] = useState(false);
     const [loading, setLoading] = useState(true);
     const [data, setData] = useState<{ events: { id: string, start: string, end: string, content: string, color: string }[], start: string, end: string }>({ events: [], start: "", end: "" });
     const [openEvent, setOpenEvent] = useState("");
@@ -28,6 +29,18 @@ export default function Page() {
 
             loadData({ start: data.start, end: data.end });
         }).catch((e) => { setCreating(false); })
+    }
+
+    const deleteEvent = (id: string) => {
+        if (deleting) return;
+
+        setDeleting(true);
+
+        requestWrapper.delete("/api/events", { id }).then((res) => {
+            setDeleting(false);
+
+            loadData(data);
+        }).catch((e) => { setDeleting(false); })
     }
 
     const loadData = (targetTimeline: { start: string, end: string}) => {
@@ -98,8 +111,8 @@ export default function Page() {
         </div>
     </div>
     {date !== undefined ? <DayPopup date={date} data={getEventsOnDay(date)} onClose={() => { setDate(undefined); }} openSettings={setOpenEvent} /> : ""}
-    {openEvent !== "" && getEvent(openEvent) !== undefined ? <EventSettings update={updateEvent} data={getEvent(openEvent)} close={() => {setOpenEvent("")}} /> : ""}
-    {creating || loading ? <>
+    {openEvent !== "" && getEvent(openEvent) !== undefined ? <EventSettings deleteEvent={deleteEvent} update={updateEvent} data={getEvent(openEvent)} close={() => {setOpenEvent("")}} /> : ""}
+    {creating || loading || deleting ? <>
         <div className="fixed top-0 left-0 w-full h-full bg-black opacity-30 z-[150]"></div>
         <div className="fixed top-0 left-0 w-full h-full bg-transparent z-[160]">
             <Loading />
