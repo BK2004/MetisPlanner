@@ -4,7 +4,7 @@ import { Month, Months, Days, getDaysInMonth, Day, daysAreEqual } from ".";
 import { useState } from "react";
 
 export function DaySelector({ selected, selectDate }: { selected: Day, selectDate: (date: Day) => void }) {
-    const [month, setMonth] = useState<Month>({ month: new Date(Date.now()).getMonth(), year: new Date(Date.now()).getFullYear() });
+    const [month, setMonth] = useState<Month>({ month: new Date().getMonth(), year: new Date().getFullYear() });
 
     return (<div className="w-full h-fit">
         <div className="top-bar w-full flex flex-row justify-center mx-auto">
@@ -26,7 +26,7 @@ export function DaySelector({ selected, selectDate }: { selected: Day, selectDat
             {getDaysInMonth(month.month, month.year).map((day: Day | undefined, i: number) => {
                 if (day !== undefined) {
                     return (<div key={"day-" + day.date + "-" + day.month + "-" + day.year} className={`transition-all duration-300 ease-in-out col-start-${i % 7 + 1} row-start-${Math.floor(i / 7) + 1}`}>
-                        <button onClick={() => { selectDate(day); }} className={`transition-all duration-300 ease-in-out w-8 h-8 text-center rounded-3xl hover:bg-blue-500 ${daysAreEqual(selected, day) ? "bg-blue-500 hover:bg-blue-300 text-white" : "hover:bg-opacity-30"}`}>
+                        <button onClick={() => { selectDate(day); }} className={`transition-all duration-300 ease-in-out w-8 h-8 text-center rounded-3xl ${daysAreEqual(selected, day) ? "bg-blue-500 hover:bg-blue-400 text-white" : "hover:bg-opacity-30 hover:bg-blue-500"}`}>
                             {day.date}
                         </button>
                     </div>);

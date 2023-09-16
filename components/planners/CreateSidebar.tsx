@@ -10,7 +10,7 @@ const useFocus = () => {
 }
 
 export function CreateSidebar({ onSubmit }: { onSubmit: (data: { label: string, start: string, end: string, color: string }) => void }) {
-    const [selectedDate, setSelectedDate] = useState<Day>({date: new Date(Date.now()).getDate(), weekday: new Date(Date.now()).getDay(), month: new Date(Date.now()).getMonth(), year: new Date(Date.now()).getFullYear()});
+    const [selectedDate, setSelectedDate] = useState<Day>({date: new Date().getDate(), weekday: new Date().getDay(), month: new Date().getMonth(), year: new Date().getFullYear()});
     const [fields, setFields] = useState<{ label: string, start: string, end: string }>({ label: "", start: "", end: "" });
     const [selectedColor, setSelectedColor] = useState("blue");
     const [labelRef, setLabelFocus] = useFocus();
