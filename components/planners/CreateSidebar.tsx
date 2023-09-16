@@ -17,10 +17,6 @@ export function CreateSidebar({ onSubmit }: { onSubmit: (data: { label: string, 
     const [startRef, setStartFocus] = useFocus();
     const [endRef, setEndFocus] = useFocus();
 
-    useEffect(() => {
-        console.log(selectedDate);
-    }, [])
-
     const validateForm = () => {
         if (fields['label'] === '') {
             // Label input not filled out

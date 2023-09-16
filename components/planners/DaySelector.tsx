@@ -1,10 +1,14 @@
 'use client'
 
 import { Month, Months, Days, getDaysInMonth, Day, daysAreEqual } from ".";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export function DaySelector({ selected, selectDate }: { selected: Day, selectDate: (date: Day) => void }) {
     const [month, setMonth] = useState<Month>({ month: new Date().getMonth(), year: new Date().getFullYear() });
+
+    useEffect(() => {
+        console.log(selected);
+    })
 
     return (<div className="w-full h-fit">
         <div className="top-bar w-full flex flex-row justify-center mx-auto">
