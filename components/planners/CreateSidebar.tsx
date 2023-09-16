@@ -1,3 +1,5 @@
+'use client'
+
 import { DaySelector, Day, getTimesForDay, ColorPicker } from ".";
 import { useState, useRef } from "react";
 import { convertToEpochSeconds } from ".";
