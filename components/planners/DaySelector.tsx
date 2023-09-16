@@ -1,12 +1,12 @@
 'use client'
 
-import { Month, Months, Days, getDaysInMonth, Day, daysAreEqual } from ".";
+import { Month, Months, Days, getDaysInMonth, Day, daysAreEqual, getDayFromIso } from ".";
 import { useState, useMemo } from "react";
 
-export function DaySelector({ selected, selectDate }: { selected: Day|undefined, selectDate: (date: Day) => void }) {
+export function DaySelector({ selected, selectDate }: { selected: string, selectDate: (date: Day) => void }) {
     const [month, setMonth] = useState<Month>({ month: new Date().getMonth(), year: new Date().getFullYear() });
 
-    const currDay = useMemo(() => selected || {date: new Date().getDate(), weekday: new Date().getDay(), month: new Date().getMonth(), year: new Date().getFullYear()}, [selected])
+    const currDay = useMemo(() => getDayFromIso(selected), [selected])
 
     return (<div className="w-full h-fit">
         <div className="top-bar w-full flex flex-row justify-center mx-auto">

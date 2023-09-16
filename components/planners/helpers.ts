@@ -48,6 +48,16 @@ export const convertIsoToMsTime = (iso: string) => {
     return new Date(iso).getTime();
 }
 
+export const getDayFromIso = (iso: string) => {
+    const d = new Date(iso);
+
+    return { date: d.getDate(), weekday: d.getDay() as Days, month: d.getMonth(), year: d.getFullYear() }
+}
+
+export const getIsoFromDay = (d: Day) => {
+    return new Date(d.year, d.month, d.date).toISOString();
+}
+
 export const getTimeString = (iso: string) => {
     const d = new Date(iso);
     const minutes = d.getMinutes();

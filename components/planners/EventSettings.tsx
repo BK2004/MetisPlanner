@@ -1,7 +1,7 @@
 'use client'
 
 import { useMemo, useState } from "react";
-import { getTimeString, getTimesForDay, convertIsoToDay, convertIsoToMsTime, convertMsToIsoTime, Day, convertToEpochSeconds, ColorPicker } from ".";
+import { getTimeString, getTimesForDay, convertIsoToDay, convertIsoToMsTime, convertMsToIsoTime, Day, convertToEpochSeconds, ColorPicker, getDayFromIso, getIsoFromDay } from ".";
 import { DaySelector } from ".";
 import { Colors } from ".";
 
@@ -34,7 +34,7 @@ export function EventSettings({ data, close, update }: { data: any, close: () =>
                 <div className="col-wrap flex flex-row justify-around">
                     <div className="w-[250px] left">
                     <p className="w-full text-center text-lg text-neutral-600 dark:text-neutral-400">Date</p>
-                        <DaySelector selected={day} selectDate={setDate} />
+                        <DaySelector selected={getIsoFromDay(day)} selectDate={setDate} />
                     </div>
                     <div className="right w-[250px] flex flex-col items-center">
                         <p className="w-full text-center text-lg text-neutral-600 dark:text-neutral-400">Time</p>
