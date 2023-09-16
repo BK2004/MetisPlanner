@@ -1,3 +1,5 @@
+'use client'
+
 import { Colors } from ".";
 
 export function ColorPicker({ selected, setColor }: { selected: string, setColor: any }) {
