@@ -1,5 +1,5 @@
 import { DaySelector, Day, getTimesForDay, ColorPicker } from ".";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { convertToEpochSeconds } from ".";
 
 const useFocus = () => {
@@ -16,6 +16,10 @@ export function CreateSidebar({ onSubmit }: { onSubmit: (data: { label: string, 
     const [labelRef, setLabelFocus] = useFocus();
     const [startRef, setStartFocus] = useFocus();
     const [endRef, setEndFocus] = useFocus();
+
+    useEffect(() => {
+        console.log(selectedDate);
+    }, [])
 
     const validateForm = () => {
         if (fields['label'] === '') {
