@@ -1,5 +1,5 @@
 import { DaySelector, Day, getTimesForDay, ColorPicker } from ".";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import { convertToEpochSeconds } from ".";
 
 const useFocus = () => {
