@@ -1,7 +1,7 @@
 'use client'
 
-import { DaySelector, Day, getTimesForDay, ColorPicker } from ".";
-import { useState, useRef } from "react";
+import { DaySelector, Day, getTimesForDay, ColorPicker, Days } from ".";
+import { useState, useRef, useEffect } from "react";
 import { convertToEpochSeconds } from ".";
 
 const useFocus = () => {
@@ -18,6 +18,11 @@ export function CreateSidebar({ onSubmit }: { onSubmit: (data: { label: string, 
     const [labelRef, setLabelFocus] = useFocus();
     const [startRef, setStartFocus] = useFocus();
     const [endRef, setEndFocus] = useFocus();
+
+    // set selected date to today on client
+    useEffect(() => {
+        setSelectedDate({date: new Date().getDate(), weekday: new Date().getDay() as Days, month: new Date().getMonth(), year: new Date().getFullYear() })
+    }, [])
 
     const validateForm = () => {
         if (fields['label'] === '') {
