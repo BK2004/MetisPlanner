@@ -85,8 +85,19 @@ export const getTimesForDay = (day: number, month: number, year: number) => {
 export const convertIsoToDay = (iso: string) => {
     let d = new Date(iso);
 
-    // If time is 12:00 AM, the day should be 1 day less
-    if (d.getHours() === 0) d = new Date(d.getTime() - 1000);
-
     return { date: d.getDate(), weekday: d.getDay(), month: d.getMonth(), year: d.getFullYear() }
+}
+
+export const getDaysInRange = (startIso: string, endIso: string) => {
+    const res: Day[] = [];
+    const startDay = convertIsoToDay(startIso);
+    const endDay = convertIsoToDay(endIso);
+    const startTime = convertToEpochSeconds(startDay.date, startDay.month, startDay.year) * 1000;
+    const endTime = convertToEpochSeconds(endDay.date, endDay.month, endDay.year) * 1000;
+
+    for (let i = startTime; i <= endTime; i += 24 * 60 * 60 * 1000) {
+        res.push(convertIsoToDay(new Date(i).toISOString()));
+    }
+
+    return res;
 }

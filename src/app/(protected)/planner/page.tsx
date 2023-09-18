@@ -1,7 +1,7 @@
 'use client'
 
-import { CalendarSelector, Day, Days, EventSettings, Month, Months, convertIsoToMsTime, convertToEpochSeconds, convertToIsoTime, daysAreEqual, getTimeString } from "../../../../components/planners";
-import { useState } from 'react';
+import { CalendarSelector, DailySelector, Day, Days, EventSettings, Month, Months, convertIsoToMsTime, convertToEpochSeconds, convertToIsoTime, daysAreEqual, getTimeString } from "../../../../components/planners";
+import { useState, useMemo, useEffect } from 'react';
 import { DayPopup } from "../../../../components/planners/DayPopup";
 import { CreateSidebar } from "../../../../components/planners";
 import { FieldValues } from "react-hook-form";
@@ -18,6 +18,18 @@ export default function Page() {
     const [openEvent, setOpenEvent] = useState("");
     const [showSettings, setShowSettings] = useState(false);
     const [currMonth, setCurrMonth] = useState<Month>({ month: (new Date(Date.now()).getMonth() as Months), year: (new Date(Date.now()).getFullYear()) })
+    const [screenWidth, setScreenWidth] = useState<number | undefined>(undefined);
+
+    const isSmallScreen = useMemo(() => screenWidth! <= 600, [screenWidth]);
+
+    // Subscribe to window resize event on mount
+    useEffect(() => {
+        setScreenWidth(window.innerWidth);
+
+        window.addEventListener("resize", (e: UIEvent) => {
+            setScreenWidth(window.innerWidth)
+        })
+    }, [])
 
     const createEvent = (request: FieldValues) => {
         if (creating) return;
@@ -104,11 +116,17 @@ export default function Page() {
             <CreateSidebar onSubmit={createEvent} />
         </div>
         <button onClick={() => setShowSettings(!showSettings)} className={`lg:hidden ${!showSettings ? "left-0" : "left-[350px]"} z-30 transition-all duration-300 ease-in-out toggle-arrow fixed top-1/2 -translate-y-1/2  -translate-x-1/2 text-white bg-blue-500 dark:bg-blue-600 w-10 h-10 rounded-full`}>
-                {showSettings ? "<" : ">"}
-            </button>
-        <div className="h-full py-3 flex-1 flex align-middle justify-center">
-            <CalendarSelector data={data} openEvent={setOpenEvent} loadData={loadData} setDate={setDate} currMonth={currMonth} setCurrMonth={setCurrMonth} />
-        </div>
+            {showSettings ? "<" : ">"}
+        </button>
+        { !isSmallScreen ? 
+            <div className={`h-full py-3 flex-1 flex align-middle justify-center`}>
+                <CalendarSelector data={data} openEvent={setOpenEvent} loadData={loadData} setDate={setDate} currMonth={currMonth} setCurrMonth={setCurrMonth} />
+            </div> 
+            :
+            <div className="h-full w-full">
+                <DailySelector data={data} loadData={loadData} />
+            </div>
+        }
     </div>
     {date !== undefined ? <DayPopup date={date} data={getEventsOnDay(date)} onClose={() => { setDate(undefined); }} openSettings={setOpenEvent} /> : ""}
     {openEvent !== "" && getEvent(openEvent) !== undefined ? <EventSettings deleteEvent={deleteEvent} update={updateEvent} data={getEvent(openEvent)} close={() => {setOpenEvent("")}} /> : ""}

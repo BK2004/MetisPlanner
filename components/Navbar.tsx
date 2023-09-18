@@ -45,8 +45,7 @@ export default function Navbar() {
     return (<>
             <div className="z-30 w-full relative bg-white dark:bg-neutral-850 shadow-sm shadow-white dark:shadow-neutral-850 py-3 px-16 flex justify-between">
                 <a className="brand flex" href="/">
-                    <LogoSvg className="h-10 text-blue-600 dark:text-blue-500 my-auto" />
-                    <h1 className="text-blue-600 dark:text-blue-500 my-auto font-bold ml-2 text-4xl">MetisPlanner</h1>
+                    <LogoSvg className="h-14 text-blue-600 dark:text-blue-500 my-auto" />
                 </a>
                 <button onClick={() => { setDropdownVisible(!dropdownVisible) }}>
                     <ProfileIcon className="h-14 w-14 text-blue-500 transition-all duration-300 ease-in-out hover:text-blue-400" />
