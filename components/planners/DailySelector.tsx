@@ -24,11 +24,16 @@ export function DailySelector({ data, loadData, openSettings }: { data: {id: str
 
     const incrementWeek = (inc: number) => {
         const startDate = new Date(weekStart.year, weekStart.month, weekStart.date + 7 * inc);
-        const endDate = new Date(weekEnd.date, weekEnd.month, weekEnd.date + 7 * inc);
+        const endDate = new Date(weekEnd.year, weekEnd.month, weekEnd.date + 7 * inc);
 
-        setCurrDay({ date: startDate.getDate(), month: startDate.getMonth(), year: startDate.getFullYear(), weekday: 0 });
-        setWeekStart({ date: startDate.getDate(), month: startDate.getMonth(), year: startDate.getFullYear(), weekday: 0 });
-        setWeekEnd({ date: endDate.getDate(), month: endDate.getMonth(), year: endDate.getFullYear(), weekday: 6 });
+        const newStart = { date: startDate.getDate(), month: startDate.getMonth(), year: startDate.getFullYear() };
+        const newEnd = { date: endDate.getDate(), month: endDate.getMonth(), year: endDate.getFullYear() };
+
+        setCurrDay({ ...newStart, weekday: 0 });
+        setWeekStart({ ...newStart, weekday: 0 });
+        setWeekEnd({ ...newEnd, weekday: 6 });
+
+        loadData({ start: convertToIsoTime(newStart.date, newStart.month, newStart.year), end: convertToIsoTime(newEnd.date, newEnd.month, newEnd.year) });
     }
 
     return (<div className="w-[calc(100%-2rem)] m-4 h-[700px] bg-white dark:bg-neutral-850 border-2 border-blue-500 flex flex-col">
@@ -53,9 +58,14 @@ export function DailySelector({ data, loadData, openSettings }: { data: {id: str
         <div className="date-display bg-gray-100 dark:bg-neutral-800 pb-2 px-4 w-full flex justify-between align-middle">
             <h2>{`${Months[currDay.month]} ${currDay.date < 10 ? "0" : ""}${currDay.date}, ${currDay.year}`}</h2>
             <button className="rounded-md bg-white dark:bg-neutral-850 px-2 border-[1px] border-gray-300 dark:border-neutral-750" onClick={() => {
-                setWeekStart({ date: new Date().getDate() - new Date().getDay(), month: new Date().getMonth(), year: new Date().getFullYear(), weekday: 0 });
-                setWeekEnd({ date: new Date().getDate() + (6 - new Date().getDay()), month: new Date().getMonth(), year: new Date().getFullYear(), weekday: 6 });
+                const newStart = { date: new Date().getDate() - new Date().getDay(), month: new Date().getMonth(), year: new Date().getFullYear(), weekday: 0 };
+                const newEnd = { date: new Date().getDate() + (6 - new Date().getDay()), month: new Date().getMonth(), year: new Date().getFullYear(), weekday: 6 };
+
+                setWeekStart(newStart);
+                setWeekEnd(newEnd);
                 setCurrDay({ date: new Date().getDate(), month: new Date().getMonth(), year: new Date().getFullYear(), weekday: new Date().getDay() });
+                
+                loadData({ start: convertToIsoTime(newStart.date, newStart.month, newStart.year), end: convertToIsoTime(newEnd.date, newEnd.month, newEnd.year) });
             }}>Today</button>
         </div>
         <div className="event-container flex-1 px-4 py-2 overflow-y-scroll scroll-none">
