@@ -58,6 +58,20 @@ export function CreateSidebar({ onSubmit }: { onSubmit: (data: { label: string, 
         setFields({ label: fields.label, start: String(newStart), end: String(newEnd) });
     }
 
+    const chooseTime = (start: string, end: string) => {
+        let startNum = Number(start);
+        let endNum = Number(end);
+        if (isNaN(startNum) || isNaN(endNum)) {
+            setFields({ label: fields.label, start: start, end: end });
+
+            return;
+        }
+        // End num is less than start num, set end to start
+        if (endNum < startNum) endNum = startNum;
+
+        setFields({ label: fields.label, start: String(startNum), end: String(endNum) });
+    }
+
     return (<div className="flex flex-col justify-start align-middle h-full w-full bg-white dark:bg-neutral-850 border-r-2 border-r-blue-500 dark:border-r-blue-600">
         <h1 className="text-center pt-4 text-3xl">Create event</h1>
         <hr className="border-0 h-1 my-2 bg-gray-200 dark:bg-neutral-750 w-5/6 mx-auto rounded-lg" />
@@ -73,7 +87,7 @@ export function CreateSidebar({ onSubmit }: { onSubmit: (data: { label: string, 
                 <div className="dropdown-group w-2/5">
                     <label htmlFor="start">Start Time</label>
                     <select ref={startRef} required onChange={ (e) => {
-                        setFields({label: fields.label, start: e.target.value, end: fields.end });
+                        chooseTime(e.target.value, fields.end );
                     }} value={fields.start} name="start" id="start" className="scroll-none appearance-none scroll-p-0 scroll-m-0 outline-0 dark:bg-neutral-750 bg-gray-100 ring-gray-400 dark:ring-neutral-900 ring-1 focus:ring-2 focus:ring-blue-600 dark:focus:ring-blue-500 ring-inset border-0 rounded-md px-3 py-2 w-full transition-all duration-100 ease-linear">
                         <option value=""></option>
                         {getTimesForDay(selectedDate?.date || new Date().getDate(), selectedDate?.month || new Date().getMonth(), selectedDate?.year || new Date().getFullYear()).map(({ value, label }) => {
@@ -84,7 +98,7 @@ export function CreateSidebar({ onSubmit }: { onSubmit: (data: { label: string, 
                 <div className="dropdown-group w-2/5">
                     <label htmlFor="end" className="block text-right">End Time</label>
                     <select ref={endRef} required onChange={ (e) => {
-                        setFields({label: fields.label, end: e.target.value, start: fields.start });
+                        chooseTime(fields.start, e.target.value);
                     }} value={fields.end} name="end" id="end" className="scroll-none appearance-none scroll-p-0 scroll-m-0 outline-0 dark:bg-neutral-750 bg-gray-100 ring-gray-400 dark:ring-neutral-900 ring-1 focus:ring-2 focus:ring-blue-600 dark:focus:ring-blue-500 ring-inset border-0 rounded-md px-3 py-2 w-full transition-all duration-100 ease-linear">
                         <option value=""></option>
                         {getTimesForDay(selectedDate?.date || new Date().getDate(), selectedDate?.month || new Date().getMonth(), selectedDate?.year || new Date().getFullYear()).map(({ value, label }) => {

@@ -21,6 +21,13 @@ export function EventSettings({ data, close, update, deleteEvent }: { data: any,
         setChanges({ content: changes.content, start: newStart, end: newEnd, color: changes.color });
         setDay(date);
     }
+
+    const chooseTime = (start: number, end: number) => {
+        // End num is less than start num, set end to start
+        if (end < start) end = start;
+
+        setChanges({ content: changes.content, color: changes.content, start: start, end: end });
+    }
     
     return (<>
         <div className="settings-wrapper fixed flex justify-center align-middle w-full h-full z-50 overflow-hidden">
@@ -36,13 +43,13 @@ export function EventSettings({ data, close, update, deleteEvent }: { data: any,
                     <div className="right w-[250px] flex flex-col items-center">
                         <p className="w-full text-center text-lg text-neutral-600 dark:text-neutral-400">Time</p>
                         <div className="time-wrap w-full flex justify-between">
-                            <select onChange={(e) => setChanges({ content: changes.content, start: Number(e.target.value), end: changes.end, color: changes.color })} value={changes.start} className="text-lg hover:cursor-pointer transition-all duration-150 ease-in-out appearance-none outline-0 ring-0 bg-white dark:bg-neutral-850 scroll-none w-fit pr-2 pl-1 rounded-md focus:shadow-md focus:bg-gray-100 border-b-2 border-gray-100 dark:border-neutral-750 focus:border-b-0 focus:dark:bg-neutral-700 focus:ring-2 focus:ring-blue-500 focus:dark:ring-blue-600">
+                            <select onChange={(e) => chooseTime(Number(e.target.value), changes.end)} value={changes.start} className="text-lg hover:cursor-pointer transition-all duration-150 ease-in-out appearance-none outline-0 ring-0 bg-white dark:bg-neutral-850 scroll-none w-fit pr-2 pl-1 rounded-md focus:shadow-md focus:bg-gray-100 border-b-2 border-gray-100 dark:border-neutral-750 focus:border-b-0 focus:dark:bg-neutral-700 focus:ring-2 focus:ring-blue-500 focus:dark:ring-blue-600">
                                 {getTimesForDay(day.date, day.month, day.year).map((val) => {
                                     return (<option className="bg-gray-100 dark:bg-neutral-700" key={`start-option-${val.value}`} value={val.value}>{val.label}</option>);
                                 })}
                             </select>
                             <span className="mx-1">&mdash;</span>
-                            <select onChange={(e) => setChanges({ content: changes.content, start: changes.start, end: Number(e.target.value), color: changes.color })} value={changes.end} className="text-lg hover:cursor-pointer px-2 transition-all duration-150 ease-in-out appearance-none outline-0 ring-0 bg-white dark:bg-neutral-850 scroll-none w-fit rounded-md focus:shadow-md focus:bg-gray-100 border-b-2 border-gray-100 dark:border-neutral-750 focus:border-b-0 focus:dark:bg-neutral-700 focus:ring-2 focus:ring-blue-500 focus:dark:ring-blue-600">
+                            <select onChange={(e) => chooseTime(changes.start, Number(e.target.value))} value={changes.end} className="text-lg hover:cursor-pointer px-2 transition-all duration-150 ease-in-out appearance-none outline-0 ring-0 bg-white dark:bg-neutral-850 scroll-none w-fit rounded-md focus:shadow-md focus:bg-gray-100 border-b-2 border-gray-100 dark:border-neutral-750 focus:border-b-0 focus:dark:bg-neutral-700 focus:ring-2 focus:ring-blue-500 focus:dark:ring-blue-600">
                                 {getTimesForDay(day.date, day.month, day.year).map((val) => {
                                     return <option className="bg-gray-100 dark:bg-neutral-700" key={`start-option-${val.value}`} value={val.value}>{val.label}</option>;
                                 })}
