@@ -43,9 +43,9 @@ export function LogoSvg({ className }: { className: string }) {
 
 export function AbsoluteLogo() {
     return (
-        <div className={`flex justify-between logo absolute top-5 right-5 w-fit h-fit py-2 px-6 rounded-3xl bg-white shadow-sm shadow-gray-400 dark:shadow-neutral-900 dark:bg-neutral-850`}>
+        <a href="/" className={`flex justify-between logo absolute top-5 right-5 w-fit h-fit py-2 px-6 rounded-3xl bg-white shadow-sm shadow-gray-400 dark:shadow-neutral-900 dark:bg-neutral-850`}>
           <LogoSvg className="h-[2.25rem] my-auto mr-2 aspect-square text-blue-600 fill-blue-600" />
           <h1 className="text-blue-600 text-4xl text-right font-extrabold">MetisPlanner</h1>
-        </div>
+        </a>
     );
 }
