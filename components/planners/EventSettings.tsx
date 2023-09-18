@@ -26,7 +26,7 @@ export function EventSettings({ data, close, update, deleteEvent }: { data: any,
         // End num is less than start num, set end to start
         if (end < start) end = start;
 
-        setChanges({ content: changes.content, color: changes.content, start: start, end: end });
+        setChanges({ content: changes.content, color: changes.color, start: start, end: end });
     }
     
     return (<>
