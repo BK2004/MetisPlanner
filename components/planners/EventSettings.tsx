@@ -7,7 +7,7 @@ import { Colors } from ".";
 
 export function EventSettings({ data, close, update, deleteEvent }: { data: any, close: () => void, update: (changes: { id: string, start: string, end: string, content: string, color: string }) => void, deleteEvent: (id: string) => void }) {
     const [changes, setChanges] = useState({ content: data.content, start: data.start, end: data.end, color: data.color });
-    const [day, setDay] = useState(new Date(data.start).getHours() > 0 ? convertIsoToDay(data.start) : { date: new Date(data.start).getDate(), month: new Date(data.start).getMonth(), year: new Date(data.start).getFullYear(), weekday: new Date(data.start).getDay() as Days});
+    const [day, setDay] = useState(new Date(data.start).getHours() > 0 ? convertIsoToDay(data.start) : { date: new Date(data.start).getDate() - 1, month: new Date(data.start).getMonth(), year: new Date(data.start).getFullYear(), weekday: new Date(data.start).getDay() as Days});
 
     const startTime = useMemo(() => convertIsoToMsTime(changes.start), [changes]);
     const endTime = useMemo(() => convertIsoToMsTime(changes.end), [changes]);
