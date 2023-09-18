@@ -124,7 +124,7 @@ export default function Page() {
             </div> 
             :
             <div className="h-full w-full">
-                <DailySelector data={data} loadData={loadData} />
+                <DailySelector openSettings={setOpenEvent} data={data.events} loadData={loadData} />
             </div>
         }
     </div>

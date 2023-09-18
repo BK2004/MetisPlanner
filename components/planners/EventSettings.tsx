@@ -14,9 +14,6 @@ export function EventSettings({ data, close, update, deleteEvent }: { data: any,
     }
 
     const setDate = (date: Day) => {
-        // const dayDifference = -Math.floor((convertToEpochSeconds(day.date, day.month, day.year) - convertToEpochSeconds(date.date, date.month, date.year))/60/60/24)
-        // const newStart = changes.start + 24 * dayDifference * 60 * 60 * 1000;
-        // const newEnd = changes.end + 24 * dayDifference * 60 * 60 * 1000;
         const timeDiff = convertToEpochSeconds(date.date, date.month, date.year) - convertToEpochSeconds(day.date, day.month, day.year);
         const newStart = changes.start + timeDiff * 1000;
         const newEnd = changes.end + timeDiff * 1000;

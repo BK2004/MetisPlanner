@@ -88,15 +88,11 @@ export const convertIsoToDay = (iso: string) => {
     return { date: d.getDate(), weekday: d.getDay(), month: d.getMonth(), year: d.getFullYear() }
 }
 
-export const getDaysInRange = (startIso: string, endIso: string) => {
+export const getDaysInWeek = (start: Day) => {
     const res: Day[] = [];
-    const startDay = convertIsoToDay(startIso);
-    const endDay = convertIsoToDay(endIso);
-    const startTime = convertToEpochSeconds(startDay.date, startDay.month, startDay.year) * 1000;
-    const endTime = convertToEpochSeconds(endDay.date, endDay.month, endDay.year) * 1000;
 
-    for (let i = startTime; i <= endTime; i += 24 * 60 * 60 * 1000) {
-        res.push(convertIsoToDay(new Date(i).toISOString()));
+    for (let i = start.date; i <= start.date + 6; i++) {
+        res.push(convertIsoToDay(new Date(start.year, start.month, i).toISOString()));
     }
 
     return res;
