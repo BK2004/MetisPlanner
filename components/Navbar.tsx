@@ -48,14 +48,11 @@ export default function Navbar({ loggedIn }: { loggedIn: boolean }) {
                     <a className="brand mr-5 sm:mr-10" href="/">
                         <LogoSvg className="h-14 aspect-square text-blue-500 dark:text-blue-600 my-auto" />
                     </a>
-                    {loggedIn ? 
-                        <a className="text-blue-500 hover:underline hover:underline-offset-4 transition-all duration-300 ease-in-out text-4xl font-bold" href="/planner">PLANNER</a>
-                    : ""}
                 </div>
                 {!loggedIn ?
                 <div className="button-wrap h-full flex flex-row">
-                    <a className="bg-blue-500 dark:bg-blue-600 hover:bg-blue-400 dark:hover:bg-blue-500 text-white transition-all duration-300 ease-in-out rounded-lg text-lg font-extrabold flex-1 text-center py-2 px-2 sm:px-6 h-full inline-block" href="/login">LOGIN</a>
-                    <a className="bg-blue-500 dark:bg-blue-600 hover:bg-blue-400 dark:hover:bg-blue-500 text-white transition-all duration-300 ease-in-out rounded-lg text-lg font-extrabold flex-1 text-center py-2 px-2 sm:px-6 h-full inline-block ml-2" href="/register">REGISTER</a>
+                    <a className="bg-transparent border-2 hover:text-white hover:bg-blue-500 hover:dark:bg-blue-600 border-blue-500 dark:border-blue-600 text-blue-500 dark:text-blue-600 transition-all duration-300 ease-in-out rounded-lg text-lg font-extrabold flex-1 text-center py-2 px-2 sm:px-6 h-full inline-block" href="/login">LOGIN</a>
+                    <a className="bg-blue-500 dark:bg-blue-600 hover:bg-blue-400 dark:hover:bg-blue-500 border-2 border-blue-500 dark:border-blue-600 hover:border-blue-400 dark:hover:border-blue-500 text-white transition-all duration-300 ease-in-out rounded-lg text-lg font-extrabold flex-1 text-center py-2 px-2 sm:px-6 h-full inline-block ml-2" href="/register">REGISTER</a>
                 </div>
                 :
                 <button onClick={() => { setDropdownVisible(!dropdownVisible) }}>
