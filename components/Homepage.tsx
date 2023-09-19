@@ -45,7 +45,7 @@ export function Homepage({ loggedIn }: { loggedIn: boolean }) {
             <LogoSvg className="mb-4 w-[200px] text-blue-500 dark:text-blue-600" />
             <h1 className="text-3xl font-extrabold text-blue-500 mb-4">About MetisPlanner</h1>
             <p className="text-lg mb-2">
-                MetisPlanner was made by a college undergraduate as an online alternative 
+                <span className="text-blue-500 font-bold">Purpose: </span>MetisPlanner was made by a college undergraduate as an online alternative 
                 to the inconvenience of having to carry your planner with you everywhere
                 lest you forget that important project deadline or the doctor's appointment 
                 that you've had to reschedule twice already. 
