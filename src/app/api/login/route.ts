@@ -8,6 +8,6 @@ export async function POST(req: NextRequest) {
 
         return NextResponse.json({status: 200});
     } catch(e: any) {
-        return NextResponse.json({message: e}, {status: 401, statusText: e});
+        return NextResponse.json({message: e}, {status: 401});
     }
 }
