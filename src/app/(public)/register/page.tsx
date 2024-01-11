@@ -21,7 +21,7 @@ export default function Page() {
             setSubmitted(false);
             if (res.status != 200) {
                 res.json().then(data => {
-                    setErrorMessage(data.message !== undefined ? data.message : "Unauthorized");
+                    setErrorMessage(data.message ?? "Unauthorized");
                 });
 
                 return; 

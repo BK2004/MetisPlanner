@@ -23,7 +23,7 @@ export default function Page() {
                 setEmail(data.email);
             } else {
                 res.json().then(data => {
-                    setErrorMessage(data.message !== undefined ? data.message : "Unauthorized");
+                    setErrorMessage(data.message ?? "Unauthorized");
                 })
             }
         }).catch(() => {});
