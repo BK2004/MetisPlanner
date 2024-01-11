@@ -30,24 +30,29 @@ async function getEvents(startTime: Date, endTime: Date) {
     const user = await getUser();
     if (!user) throw 'User not logged in.';
 
-    const events = await prisma.event.findMany({ where: { userId: user.id as string, OR: [
-        { start: {
-            gte: startTime,
-            lt: endTime
-        }},
-        { end: {
-            gt: startTime,
-            lte: endTime
-        } }
-    ] }, select: {
-        start: true,
-        end: true,
-        content: true,
-        color: true,
-        user: false,
-        userId: false,
-        id: true
-    } });
+    const events = await prisma.event.findMany({
+        where: {
+            userId: user.id as string, OR: [
+            { start: {
+                gte: startTime,
+                lt: endTime
+            }},
+            { end: {
+                gt: startTime,
+                lte: endTime
+            } }
+        ] }, 
+        select: {
+            start: true,
+            end: true,
+            content: true,
+            color: true,
+            user: false,
+            userId: false,
+            id: true
+        },
+        cacheStrategy: { ttl: 60 },
+    });
 
     return events;
 }
