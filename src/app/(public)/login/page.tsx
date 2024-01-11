@@ -30,7 +30,7 @@ export default function Page() {
                 setSuccess(true);
             } else {
                 res.json().then(data => {
-                    setErrorMessage(data.message !== undefined ? data.message : "Unauthorized");
+                    setErrorMessage(data.message ?? "Unauthorized");
                 })
             }
         }).catch((e) => {})

@@ -10,7 +10,7 @@ export async function GET(req: NextRequest) {
         
         return NextResponse.json({events: res}, {status: 200});
     } catch(e: any) {
-        return NextResponse.json({message: e}, {status: 401, statusText: e});
+        return NextResponse.json({message: e}, {status: 401});
     }
 }
 

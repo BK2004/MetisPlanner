@@ -1,6 +1,6 @@
 datasource db {
     provider = "mongodb"
-    url=env("PRISMA_PROXY_URI")
+    url=env("DATABASE_URL")
     directUrl = env("MONGODB_URI")
 }
 
